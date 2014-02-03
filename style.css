@@ -1,0 +1,12 @@
+/*CSS*/
+
+html, body
+{
+	text-align:center;
+}
+
+.container
+{
+	width:900px;
+	height:550px;
+}
