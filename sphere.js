@@ -7,16 +7,22 @@ function init(){
     // on initialise le moteur de rendu
     renderer = new THREE.WebGLRenderer();
 
+    //test div size
+    var width = document.getElementById('container').offsetWidth;
+    var height = document.getElementById('container').offsetHeight;
+
+    alert(width);
+
     // si WebGL ne fonctionne pas sur votre navigateur vous pouvez utiliser le moteur de rendu Canvas à la place
     // renderer = new THREE.CanvasRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( width, height );
     document.getElementById('container').appendChild(renderer.domElement);
 
     // on initialise la scène
     scene = new THREE.Scene();
 
     // on initialise la camera que l’on place ensuite sur la scène
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera = new THREE.PerspectiveCamera(50, width / height, 1, 10000 );
     camera.position.set(0, 0, 1000);
     scene.add(camera);
     

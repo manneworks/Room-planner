@@ -5,8 +5,11 @@ html, body
 	text-align:center;
 }
 
-.container
+#container
 {
 	width:900px;
 	height:550px;
+	margin:auto;
+	border: 3px solid black;
+
 }
