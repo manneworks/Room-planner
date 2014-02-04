@@ -8,15 +8,13 @@ function init(){
     renderer = new THREE.WebGLRenderer();
 
     //test div size
-    var width = document.getElementById('container').offsetWidth;
-    var height = document.getElementById('container').offsetHeight;
-
-    alert(width);
+    var width = document.getElementById('view').offsetWidth;
+    var height = document.getElementById('view').offsetHeight;
 
     // si WebGL ne fonctionne pas sur votre navigateur vous pouvez utiliser le moteur de rendu Canvas à la place
     // renderer = new THREE.CanvasRenderer();
     renderer.setSize( width, height );
-    document.getElementById('container').appendChild(renderer.domElement);
+    document.getElementById('view').appendChild(renderer.domElement);
 
     // on initialise la scène
     scene = new THREE.Scene();
