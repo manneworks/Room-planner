@@ -14,6 +14,7 @@ Nous aimerions réaliser ce projet en 3D.
 
 Caméra fixe
 
+Gestion d'une base de donnée pour les objets à l'intérieur des menus.
 
 Affichage de la pièce en milieu de page, pièce fixe.
 Gestion des utilisateurs (2 profils) dont un qui peut créer lui même ses pièces et un designer qui lui pourrait créer des objets.
@@ -24,3 +25,4 @@ Fonction souhaitée :
 
 Plusieurs boutons sur la page principale : Déplacer,Créer,Identification,Contact et Conditions générales d'utilisation.
 Possibilité de tracer soit meme une pièce (vu 2D pour dessiner et 3D pour placer les objets)
+
