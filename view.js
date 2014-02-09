@@ -1,5 +1,10 @@
-var renderer, scene, camera, mesh, width,height,projector;
+
+var renderer, scene, camera, width, height, projector;
+
+var objects = [];
+
 var selected = false;
+var selectedMesh = null;
 
 init();
 animate();
@@ -12,8 +17,6 @@ function init(){
     width = document.getElementById('view').offsetWidth;
     height = document.getElementById('view').offsetHeight;
 
-    // si WebGL ne fonctionne pas sur votre navigateur vous pouvez utiliser le moteur de rendu Canvas à la place
-    // renderer = new THREE.CanvasRenderer();
     renderer.setSize( width, height );
     document.getElementById('view').appendChild(renderer.domElement);
 
@@ -37,11 +40,13 @@ function init(){
 
 	mesh = new THREE.Mesh( geometry, material );
 	scene.add( mesh );
+    objects.push(mesh);
 
     var geometry2 = new THREE.SphereGeometry( 50, 32, 32 );
 
     mesh2 = new THREE.Mesh( geometry2, material );
     scene.add( mesh2 );
+    objects.push(mesh2);
     mesh2.position.x+=100;
 
     var roomGeo1 = new THREE.PlaneGeometry(500, 500);
@@ -65,57 +70,84 @@ function init(){
     document.onkeydown = handleKeyDown;
     document.getElementById('view').addEventListener('mousedown',onDocumentMouseDown,false);
     document.getElementById('cameraTools').addEventListener('mousedown',handleCamera,false);
-    document.getElementById('cameraTools').addEventListener('mouseup',handleCameraUp,false);
+    document.getElementById('cameraTools').addEventListener('mouseup',handleObjUp,false);
+    document.getElementById('objTools').addEventListener('mousedown',handleObj,false);
+    document.getElementById('objTools').addEventListener('mouseup',handleObjUp,false);
 }
 
 
 var interval=0;
 var dir="";
+var c=null;
 function loop(){
+    if(c==null){return;}
     switch(dir){
     case "xp":
-        camera.position.x+=1;
+        c.position.x+=1;
         break;
     case "xm":
-        camera.position.x-=1;
+        c.position.x-=1;
         break;
     case "yp":
-        camera.position.y+=1;
+        c.position.y+=1;
         break;
     case "ym":
-        camera.position.y-=1;
+        c.position.y-=1;
         break;
     case "zp":
-        camera.position.z+=1;
+        c.position.z+=1;
         break;
     case "zm":
-        camera.position.z-=1;
+        c.position.z-=1;
+        break;
+    case "rxp":
+        c.rotation.x+=1* (Math.PI / 180);
+        break;
+    case "rxm":
+        c.rotation.x-=1* (Math.PI / 180);
+        break;
+    case "ryp":
+        c.rotation.y+=1* (Math.PI / 180);
+        break;
+    case "rym":
+        c.rotation.y-=1* (Math.PI / 180);
+        break;
+    case "rzp":
+        c.rotation.z+=1* (Math.PI / 180);
+        break;
+    case "rzm":
+        c.rotation.z-=1* (Math.PI / 180);
         break;
     }
-     
-
 }
 
 function handleCamera(event){
     e = event || window.event;
     var elementId = (e.target || e.srcElement).id;
     dir=elementId;
+    c=camera;
     interval = setInterval(loop,10);
 }
 
-function handleCameraUp(event){
+function handleObjUp(event){
     clearInterval(interval);
+    dir="";
+    c=null;
 }
 
-function moveCamera(dir){
-    if(dir=='xp'){
-        camera.position.x+=1;
-    }
+function handleObj(event){
+    if(selectedMesh==null){return;}
+    e = event || window.event;
+    var elementId = (e.target || e.srcElement).id;
+    dir=elementId;
+    dir=dir.replace("o","");
+    c=selectedMesh;
+    interval = setInterval(loop,10);
 }
 
 function handleKeyDown(){
     if(selected){
-        mesh.position.x+=1;
+        selectedMesh.position.x+=1;
     }
 	render();
 }
@@ -124,11 +156,15 @@ function onDocumentMouseDown(event){
     var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
     projector.unprojectVector(vector,camera);
     var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-    var intersects = raycaster.intersectObject(mesh);
+    var intersects = raycaster.intersectObjects(objects);
     if(intersects.length > 0){
         selected=true;
+        setObjControlVisibility(true);
+        selectedMesh=intersects[0].object;
     }else{
         selected=false;
+        selectedMesh=null;
+        setObjControlVisibility(false);
     }
 
 }
