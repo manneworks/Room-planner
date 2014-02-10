@@ -1,5 +1,7 @@
-
 init();
+
+http://i2.cdscdn.com/pdt2/4/1/0/1/700x700/bos4242002445410/rw/bosch-hbn532eo-four-catalyse.jpg
+
 
 function init(){
 
@@ -214,8 +216,9 @@ function initMenu(){
 	h2.appendChild(text);
 
 	var div = document.createElement('div');
-	var p = document.createElement('p');
 	div.className='content';
+	img=document.createElement("img");
+	<img.style.src=""
 	var text = document.createTextNode("blablabla");
 	menu.appendChild(div);
 	div.appendChild(p);
