@@ -1,5 +1,4 @@
 
-
 init();
 
 function init(){
@@ -210,7 +209,7 @@ function initMenu(){
 
 	var h2 = document.createElement('h2');
 	h2.className='togglers';
-	var text = document.createTextNode("menu1");
+	var text = document.createTextNode("Cuisine");
 	menu.appendChild(h2);
 	h2.appendChild(text);
 
@@ -224,7 +223,7 @@ function initMenu(){
 
 	var h2_2 = document.createElement('h2');
 	h2_2.className='togglers';
-	var text_2 = document.createTextNode("menu2");
+	var text_2 = document.createTextNode("Salle de bain");
 	menu.appendChild(h2_2);
 	h2_2.appendChild(text_2);
 
@@ -239,7 +238,7 @@ function initMenu(){
 
 	var h2_3 = document.createElement('h2');
 	h2_3.className='togglers';
-	var text_3 = document.createTextNode("menu3");
+	var text_3 = document.createTextNode("Séjour");
 	menu.appendChild(h2_3);
 	h2_3.appendChild(text_3);
 
