@@ -218,7 +218,7 @@ function initMenu(){
 	var div = document.createElement('div');
 	div.className='content';
 	img=document.createElement("img");
-	<img.style.src=""
+	<img.style.src="">;
 	var text = document.createTextNode("blablabla");
 	menu.appendChild(div);
 	div.appendChild(p);
