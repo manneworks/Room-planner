@@ -1,4 +1,3 @@
-
 var renderer, scene, camera, width, height, projector;
 
 var objects = [];
@@ -7,7 +6,6 @@ var selected = false;
 var selectedMesh = null;
 
 init();
-animate();
 
 function init(){
     // on initialise le moteur de rendu
@@ -171,11 +169,4 @@ function onDocumentMouseDown(event){
 
 function render(){
 	renderer.render( scene, camera );
-}
-
-function animate(){
-    requestAnimationFrame( animate );
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.02;
-    render();
 }
