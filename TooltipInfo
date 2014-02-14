@@ -1,0 +1,50 @@
+Quelques infos concernant la fonction tooltip de Jquery
+
+Pour utiliser ce plugin, il vous faut inclure jQuery, le fichier javascript du plugin ainsi que le fichier CSS dans votre HTML et appeler ce petit bout de code :
+
+$('#foo').tipsy({gravity: 'n'}); // n | s | e | w
+Vous pouvez aussi avoir un effet de fondu avec ce bout de code :
+
+$('#foo').tipsy({gravity: 'n', fade:true});
+
+
+Let’s start off by creating some simple markup for the link. We need to give it a title which will be the tooltip content, and assign it a class:
+<a title="This is some information for our tooltip." class="tooltip">CSS3 Tooltip</a>
+The next step is to create some rudimentary styling for our tooltip class:
+.tooltip{
+    display: inline;
+    position: relative;
+}
+We are now displaying our tooltip inline with our link using relative positioning. Next we want to create the a rounded box to form the body of the tooltip, and position it so that it floats above the link:
+.tooltip:hover:after{
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(title);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+We are using the :hover selector which selects an element, in this case our link, on mouseover and the :after selector, which inserts content after the selected element. We have specified a black background with 80% opacity, and for browsers that do not support RGBA colors we have provided a dark grey background.
+Slightly rounded corners are created by using the border-radius attribute and we have set the text color to white. Lastly, we have positioned the tooltip box from the left of the link and added a little padding.
+As well as the styling and positioning, we have set the content property:
+content: attr(title);
+This property allows us to insert the content we want which can be a string, a media file or an attribute of the element. In this case we are using the title attribute of the link. 
+Now when you hover over your link a tooltip should be appear above it with the text you set as your link title. We have one problem though, the title information is being shown twice: once in the tooltip and once by the browser. To fix this we need to make a slight change to our HTML:
+<a href="#" title="This is some information for our tooltip."><span title="More">CSS3 Tooltip</span></a>
+What we’ve done here is is wrap the link text in a span tag with its own title attribute. Now the browser will display the title set in the span tag when the link is hovered over.
+To finish we will add an arrow to the bottom of the tooltip, to give it that little extra touch of style. We do this by using the :before selector and some border styles:
+.tooltip:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+}
