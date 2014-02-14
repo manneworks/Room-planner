@@ -1,7 +1,6 @@
+
+
 init();
-
-http://i2.cdscdn.com/pdt2/4/1/0/1/700x700/bos4242002445410/rw/bosch-hbn532eo-four-catalyse.jpg
-
 
 function init(){
 
@@ -209,20 +208,56 @@ function initGestCam(){
 function initMenu(){
 	var menu = document.getElementById('menu');
 
+//
+
+//	while(bdd){
+//		var categorie=..
+//		if(!categorie exist){
+//				h2
+//				h2.id=categorie
+//		}
+//		var objCat=document.getElementById(categorie);
+//		var text = document.createTextNode(nom);
+//		creation tooltip
+//
+//		ajout categorie;
+//	}
+
+//
 	var h2 = document.createElement('h2');
 	h2.className='togglers';
 	var text = document.createTextNode("Cuisine");
 	menu.appendChild(h2);
 	h2.appendChild(text);
+	h2.id='cuisine';
 
 	var div = document.createElement('div');
 	div.className='content';
-	img=document.createElement("img");
-	<img.style.src="">;
-	var text = document.createTextNode("blablabla");
+
+	var p = document.createElement('p');
+	var text = document.createTextNode("four");
 	menu.appendChild(div);
 	div.appendChild(p);
-	p.appendChild(text);
+	p.appendChild(text)
+
+	var p = document.createElement('p');
+	var text = document.createTextNode("four");
+	menu.appendChild(div);
+	div.appendChild(p);
+	p.appendChild(text)
+
+	var p = document.createElement('p');
+	var text = document.createTextNode("four");
+	menu.appendChild(div);
+	div.appendChild(p);
+	p.appendChild(text)
+
+	var p = document.createElement('p');
+	var text = document.createTextNode("four");
+	menu.appendChild(div);
+	div.appendChild(p);
+	p.appendChild(text)
+
 
 	var h2_2 = document.createElement('h2');
 	h2_2.className='togglers';
