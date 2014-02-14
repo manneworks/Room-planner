@@ -48,3 +48,7 @@ To finish we will add an arrow to the bottom of the tooltip, to give it that lit
     position: absolute;
     z-index: 99;
 }
+
+
+
+BEST : http://www.queness.com/post/92/create-a-simple-cssjavascript-tooltip-with-jquery
