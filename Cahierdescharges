@@ -1,28 +1,88 @@
-			          	WebRoomPlanner :
+Demande : Rapport (4 pages)
+		-Mini cahier des charges
+			Description du projet
+			Choix du theme
+			Choix technique
+		-Planning/ Agenda
+		Approche perso (technique)
 
-		              Cahier des charges.
+Intro
 
-1. Présentation du projet et de la réponse souhaitée :
+Ce projet est à réaliser dans le cadre du semestre 4 du DUT Informatique. L’objectif est de produire une réalisation informatique en presque autonomie, en préparation du stage de fin d’études.
+
+Description de la demande
+	
+Le but du projet est de réaliser une application Web de Room Planner, en français « Aménageur d’espace ». Ce dernier est un logiciel permettant de visualiser virtuellement tout nouvel aménagement d’une pièce.
+
+Critères de validation :
+	Fonctions minimales/demandées :
+	
+	L’application doit, au minimum,  afficher une pièce avec un affichage fixe. Elle doit aussi gérer des actions utilisateur comme l’ajout d’un meuble et son déplacement ou la colorisation des murs et sols. L’interface doit être un minimum personnalisée (ajout de menus par exemple).
+
+	Fonctions souhaitables :
+	
+	Nous souhaiterions que l’application possède un système d’utilisateur, ainsi qu’une gestion de base de données (pour charger les objets présent et enregistrer le travail de l’utilisateur).
+
+Nous souhaiterions pouvoir choisir l’orientation de la caméra ainsi que ses coordonnées.
+
+Un système de création de pièce serait mis en place.
+
+La personnalisation de la page principale serait visuellement améliorée.
+
+La page principale possèderait des conditions générales d’utilisation.
 
 
-Fonction minimale : 
 
-Nous aimerions réaliser ce projet en 3D.
--Une pièce au moins.
--Des objets.
--Déplacement des objets.
+Analyse de l’application 
 
-Caméra fixe
+Approche personnelle (techniques) 
+Le langage utilisé pour l'écriture de ce logiciel est l'iJava, qui est le langage support du cours d'AP12. 
 
-Gestion d'une base de donnée pour les objets à l'intérieur des menus.
-
-Affichage de la pièce en milieu de page, pièce fixe.
-Gestion des utilisateurs (2 profils) dont un qui peut créer lui même ses pièces et un designer qui lui pourrait créer des objets.
-
-Fonction souhaitée :
+Contraintes de délai (nombre de semaine avant le rendu du cahier des charges) 
+Le projet débute le 26 octobre avec la présentation en cours des objectifs de cette activité. Ce projet s'organise autour de deux travaux : la constitution d'un cahier des charges (du 9 novembre au 31 décembre) et la réalisation du logiciel répondant à ce cahier des charges (peut débuter dès le 26 octobre et s'achève le 18 janvier). A partir de janvier, toutes les séances se dérouleront en TP et porteront sur le projet. 
 
 
+Planification du projet (description du travail sur un semainier) 
 
-Plusieurs boutons sur la page principale : Déplacer,Créer,Identification,Contact et Conditions générales d'utilisation.
-Possibilité de tracer soit meme une pièce (vu 2D pour dessiner et 3D pour placer les objets)
+Semaine du au : Définition du projet et recherche d’applications similaires sur Internet pour étudier différentes réalisations.
+
+Semaine du au : 
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+
+Semaine du au :
+
+Semaine du 7 nov. au 22 nov. : Définition du projet et recherche de logiciels similaires sur Internet pour étudier différentes réalisations et éventuellement affiner le cahier des charges. 
+
+Semaines du 22 nov. au 5 déc. : Rédaction du premier jet du cahier des charges sur les parties « Introduction » et « Description de la demande ». 
+Premières réflexion sur les données à représenter et à manipuler dans le logiciel. 
+
+Semaines du 5 déc. au 12 déc. : Rédaction finale du cahier des charges sur les parties « Introduction » et « Description de la demande ». 
+Rédaction du premier jet de la partie « Analyse du logiciel » et premières expérimentations au niveau du code. 
+
+Semaines du 12 déc. au 19 déc. : Rédaction du deuxième jet de la partie « Analyse du logiciel » et premiers prototypes d'une ou des fonctionnalités de base. 
+Progression sur les fonctionnalités permettant d'atteindre l'objectif « fonctions minimales » du cahier des charges. 
+
+Semaines du 19 déc. au 2 jan. : Finalisation du cahier des charges. 
+
+Semaine du 2 jan. au 9 jan. : Progression sur les fonctionnalités permettant d'atteindre l'objectif « fonctions souhaitables » du cahier des charges. 
+
+Semaines du 9 jan. au 16 jan. : Progression sur les fonctionnalités permettant d'atteindre l'objectif« fonctions demandées » du cahier des charges.
 
