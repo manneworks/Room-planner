@@ -1,3 +1,8 @@
+<?php
+$bdd = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
+$reponse = $bdd->query('SELECT * FROM objets');
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,6 +24,7 @@
         <!--LIB-->
 
         <!--SCRIPTS-->
+       	<script src="oXHR.js"></script>
         <script type="text/javascript" src="ui.js"></script>
         <script type="text/javascript" src="view.js"></script>
         <!--SCRIPTS-->
