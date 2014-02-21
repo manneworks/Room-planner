@@ -1,5 +1,4 @@
 
-
 init();
 
 function init(){
@@ -205,7 +204,7 @@ function initGestCam(){
 	ligne.insertCell().appendChild(btn_rzm);
 }
 
-function initMenu(){
+/*function initMenu(){
 	var menu = document.getElementById('menu');
 
 //
@@ -295,5 +294,84 @@ function initMenu(){
   		});
 
 	
+}*/
+
+//Initialisation du menu
+
+function requestMenu(callback){
+            
+            var xhr = getXMLHttpRequest();
+
+            
+
+            xhr.open("POST", "recupMenu.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            
+            
+
+            xhr.send(null);
+            xhr.onreadystatechange = function() { 
+
+                if(xhr.readyState == 4) { 
+
+                   callback(xhr.responseText.split(":")); 
+
+           } 
+     }   
 }
+
+       
+function initMenu(sData){
+
+            var i=0;
+            var menu = document.getElementById('menu');
+
+            while (sData[i].length){
+                alert(sData[i]+sData[i+1]);           
+                
+
+                if (document.getElementById(sData[i]+"h2") == null){
+  
+                    var h2 = document.createElement('h2');
+                    h2.className='togglers';
+                    var text = document.createTextNode(sData[i]);
+                    menu.appendChild(h2);
+                    h2.appendChild(text);
+                    h2.id = sData[i] + "h2";
+
+                    alert("avantdiv");
+
+                    var div = document.createElement('div');
+                    div.id = sData[i] + "div";
+                    div.className='content';
+
+                    menu.appendChild(div);
+
+                    alert("apresdiv");
+
+                }
+
+
+               
+                var div = document.getElementById(sData[i]+"div");
+                var p = document.createElement('p');
+                p.id = sData[i+1];
+                var text = document.createTextNode(sData[i+1]);
+                
+                div.appendChild(p);
+                p.appendChild(text);
+            
+
+                i+=2;   
+            }
+
+        $(function() {
+            $("#menu").accordion();
+        });
+
+
+        }
+
+        requestMenu(initMenu);
+
 
