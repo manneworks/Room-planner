@@ -31,7 +31,7 @@ function init(){
 	tools.style.cssFloat="right";
 	document.getElementById('container').appendChild(tools);
 
-	initMenu();
+	requestMenu(initMenu);
 	initTools();
 }
 
@@ -326,9 +326,7 @@ function initMenu(sData){
             var menu = document.getElementById('menu');
 
             while (sData[i].length){
-                alert(sData[i]+sData[i+1]);           
                 
-
                 if (document.getElementById(sData[i]+"h2") == null){
   
                     var h2 = document.createElement('h2');
@@ -338,15 +336,11 @@ function initMenu(sData){
                     h2.appendChild(text);
                     h2.id = sData[i] + "h2";
 
-                    alert("avantdiv");
-
                     var div = document.createElement('div');
                     div.id = sData[i] + "div";
                     div.className='content';
 
                     menu.appendChild(div);
-
-                    alert("apresdiv");
 
                 }
 
@@ -372,6 +366,6 @@ function initMenu(sData){
 
         }
 
-        requestMenu(initMenu);
+        
 
 
