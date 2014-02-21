@@ -5,10 +5,17 @@
 
 	while ($donnee = $reponse->fetch()){
 	
-	//gerer les vides
+		if ($donnee['categorie']==""){
+			$test = "Divers";
+			echo $test.":";
+			echo $donnee['nom'].":";
+		}else{
+			echo $donnee['categorie'].":";
+			echo $donnee['nom'].":";
 		
-		echo $donnee['categorie'].":";
-		echo $donnee['nom'].":";
 	}
+}
+
 	
 ?>
+
