@@ -1,4 +1,3 @@
-
 init();
 
 function init(){
@@ -366,7 +365,8 @@ function initMenu(sData){
             }
 
         $(function() {
-            $("#menu").accordion();
+            	$("#menu").accordion({heightStyle: "content"});
+
         });
 
 
