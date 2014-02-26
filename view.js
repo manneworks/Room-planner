@@ -4,8 +4,9 @@ var groundMesh,myGroundGeo,myGround;
 var particleMaterial;
 
 var baseMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
-var invMaterial = new THREE.MeshLambertMaterial( { color: 'red',transparent: true,blending: THREE.AdditiveBlending, side:THREE.DoubleSide, shading: THREE.SmoothShading } );
+var invMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading , transparent: true, opacity: 0.1} );
 
+var controls;
 
 var objects = [];
 var circles=[];
@@ -13,6 +14,7 @@ var walls=[];
 
 var selected = false;
 var selectedMesh = null;
+var offset = new THREE.Vector3();
 
 var creation = true;
 var points= [];
@@ -36,44 +38,17 @@ function init(){
 
     // on initialise la camera que l’on place ensuite sur la scène
     camera = new THREE.PerspectiveCamera(50, width / height, 1, 10000 );
-    /*camera.position.set(0, 400, 1000);
-    camera.rotation.x-=30* (Math.PI / 180);*/
     camera.position.set(0,1000,1000);
     camera.rotation.x-=45 * (Math.PI / 180);
     scene.add(camera);
 
-    //creation de la piece
+    controls = new THREE.OrbitControls( camera );
+    controls.addEventListener( 'change', render );
+
 
     //
     projector = new THREE.Projector();
     
-	// on créé la sphère et on lui applique une texture sous forme d’image
-    /*
-	var geometry = new THREE.SphereGeometry( 50, 32, 32 );
-    var material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/metal.jpg') } );
-
-	mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
-    objects.push(mesh);
-
-    var geometry2 = new THREE.SphereGeometry( 50, 32, 32 );
-
-    mesh2 = new THREE.Mesh( geometry2, material );
-    scene.add( mesh2 );
-    objects.push(mesh2);
-    mesh2.position.x+=100;
-
-    var roomGeo1 = new THREE.PlaneGeometry(500, 500);
-    meshRoom1= new THREE.Mesh(roomGeo1,material);
-    scene.add(meshRoom1);
-    meshRoom1.rotation.x-=80 * (Math.PI / 180);
-    meshRoom1.position.y-=140;
-
-    var roomGeo2 = new THREE.PlaneGeometry(500, 500);
-    meshRoom2= new THREE.Mesh(roomGeo2,material);
-    scene.add(meshRoom2);
-    meshRoom2.position.z-=200;
-*/
     //sol 10=1metre
     var geo = new THREE.PlaneGeometry(2000,2000);
     mat = new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.SmoothShading } )
@@ -89,9 +64,6 @@ function init(){
 	lumiere.position.set( 0, 100, 400 );
 	scene.add( lumiere );
 
-    //camera.add(lumiere);
-    //lumiere.position.set(0,0,0); //TODO
-
     //test lumiere
     
     pointLight = new THREE.PointLight( 0xffffff, 0.75 );
@@ -102,76 +74,20 @@ function init(){
     myGroundGeo = new THREE.Geometry();
 
 
+
+    onMouseDownPosition = new THREE.Vector2();
+
     // on effectue le rendu de la scène
     render();
-    document.onkeydown = handleKeyDown;
-    document.getElementById('view').addEventListener('mousedown',onDocumentMouseDown,false);
-    document.getElementById('cameraTools').addEventListener('mousedown',handleCamera,false);
-    document.getElementById('cameraTools').addEventListener('mouseup',handleObjUp,false);
-    document.getElementById('objTools').addEventListener('mousedown',handleObj,false);
-    document.getElementById('objTools').addEventListener('mouseup',handleObjUp,false);
-}
 
-
-var interval=0;
-var dir="";
-var c=null;
-function loop(){
-    if(c==null){return;}
-    switch(dir){
-    case "xp":
-        c.position.x+=2;
-        break;
-    case "xm":
-        c.position.x-=2;
-        break;
-    case "yp":
-        c.position.y+=2;
-        break;
-    case "ym":
-        c.position.y-=2;
-        break;
-    case "zp":
-        c.position.z+=2;
-        break;
-    case "zm":
-        c.position.z-=2;
-        break;
-    case "rxp":
-        c.rotation.x+=1* (Math.PI / 180);
-        break;
-    case "rxm":
-        c.rotation.x-=1* (Math.PI / 180);
-        break;
-    case "ryp":
-        c.rotation.y+=1* (Math.PI / 180);
-        break;
-    case "rym":
-        c.rotation.y-=1* (Math.PI / 180);
-        break;
-    case "rzp":
-        c.rotation.z+=1* (Math.PI / 180);
-        break;
-    case "rzm":
-        c.rotation.z-=1* (Math.PI / 180);
-        break;
-    }
-    checkWalls();
-}
-
-
-function checkWalls(){
-    var nearestwall = getNearestWall();
-    for(var i=0;i<walls.length;i++){
-        if(walls[i]!=nearestwall){
-            walls[i].material=baseMaterial;
-        }
-    }
-    if(nearestwall.material==baseMaterial){
-        nearestwall.material=invMaterial;
-    }
+    document.getElementById('view').addEventListener('mousedown',onMouseDown,false);
+    document.getElementById('view').addEventListener('mouseup',onMouseUp,false);
+    document.getElementById('view').addEventListener('mousemove',onMouseMove,false);
 
 }
+
+
+
 
 function addObject(p){
     //var material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/metal.jpg') } );
@@ -185,75 +101,128 @@ function addObject(p){
     scene.add(mesh);
 }
 
-function handleCamera(event){
-    e = event || window.event;
-    var elementId = (e.target || e.srcElement).id;
-    dir=elementId;
-    c=camera;
-    interval = setInterval(loop,10);
-}
+function onMouseDown(event){
 
-function handleObjUp(event){
-    clearInterval(interval);
-    dir="";
-    c=null;
-}
-
-function handleObj(event){
-    if(selectedMesh==null){return;}
-    e = event || window.event;
-    var elementId = (e.target || e.srcElement).id;
-    dir=elementId;
-    dir=dir.replace("o","");
-    c=selectedMesh;
-    interval = setInterval(loop,10);
-}
-
-function handleKeyDown(){
-    if(selected){
-        selectedMesh.position.x+=1;
-    }
-	render();
-}
-
-function onDocumentMouseDown(event){
-    if(creation){
-        var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
-        projector.unprojectVector(vector,camera);
-        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-        var intersects = raycaster.intersectObject(groundMesh);
-        if(intersects.length > 0){
-            drawCircle(intersects[0].point);
-            points.push(intersects[0].point);
-            updateMyGround();
-        }else{
-            creation=false;
-            clearCircles();
-            createWalls();
-        }
-    }else{
-        var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
-        projector.unprojectVector(vector,camera);
-        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-        var intersects = raycaster.intersectObjects(objects);
-        if(intersects.length > 0){
-            selected=true;
-            setObjControlVisibility(true);
-            selectedMesh=intersects[0].object;
-        }else{
-            selected=false;
-            selectedMesh=null;
-            setObjControlVisibility(false);
+    if(event.which==1){
+        if(creation){
             var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
             projector.unprojectVector(vector,camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-            var intersects = raycaster.intersectObject(myGround);
+            var intersects = raycaster.intersectObject(groundMesh);
             if(intersects.length > 0){
-                addObject(intersects[0].point);
+                drawCircle(intersects[0].point);
+                points.push(intersects[0].point);
+                updateMyGround();
+            }else{
+                creation=false;
+                clearCircles();
+                createWalls();
+            }
+        }else{
+            var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+            projector.unprojectVector(vector,camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObjects(objects);
+            if(intersects.length > 0){
+                selected=true;
+                selectedMesh=intersects[0].object;
+
+                //var intersects = raycaster.intersectObject(myGround);
+                //offset.copy(intersects[0].point).sub(myGround.position);
+
+                offset.set(0,myGround.position.y-selectedMesh.position.y,0);
+
+            }else{
+                selected=false;
+                selectedMesh=null;
+                var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+                projector.unprojectVector(vector,camera);
+                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+                var intersects = raycaster.intersectObject(myGround);
+                if(intersects.length > 0){
+                    addObject(intersects[0].point);
+                }
             }
         }
     }
+}
 
+function onMouseUp(event){
+    selected=false;
+    selectedMesh=null;
+}
+
+var clone=null;
+function onMouseMove(event){
+    if(selected){
+        var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+        projector.unprojectVector(vector,camera);
+        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+        var intersects = raycaster.intersectObject(myGround);
+
+        if(clone==null){
+            clone = selectedMesh.clone();
+            clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0} );
+            scene.add(clone);
+        }
+        if(intersects[0]!=null){
+            mse = intersects[0].point.sub(offset);
+            clone.position.copy(mse);
+
+        }
+
+        var test = false;
+        console.log(clone.position);
+        for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){       
+            var localVertex = clone.geometry.vertices[vertexIndex].clone();
+            var globalVertex = localVertex.applyMatrix4(clone.matrix);
+            var directionVector = globalVertex.sub( clone.position );
+
+            var ray = new THREE.Raycaster( clone.position, directionVector.clone().normalize() );
+            var collisionResults = ray.intersectObjects( walls );
+            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+            {
+                test=true;
+                console.log("collision");
+            }
+        }
+
+        if(!test){
+           selectedMesh.position.copy(clone.position);
+        }
+        return;
+    }
+}
+
+function checkWalls(){
+    if(walls.length==0){return;}
+    var nearestwall = getNearestWall(camera);
+    for(var i=0;i<walls.length;i++){
+        if(walls[i]!=nearestwall){
+            walls[i].material=baseMaterial;
+        }
+    }
+    if(nearestwall.material==baseMaterial){
+        nearestwall.material=invMaterial;
+    }
+}
+
+function getNearestWall(obj){
+    var minDist=99999999;
+    var nearestwall=null;
+    for(var i=0;i<walls.length;i++){
+        var dist=0;
+        var j;
+        for(j=0;j<walls[i].geometry.vertices.length;j++){
+            dist+=obj.position.distanceTo(walls[i].geometry.vertices[j]);
+        }
+        dist=dist/j;
+        if(dist<minDist){
+            minDist=dist;
+            nearestwall=walls[i];
+        }
+    }
+    return nearestwall;
 }
 
 function createWalls(){
@@ -284,68 +253,35 @@ function createWalls(){
     }
 }
 
-function updateMyGround(){
+function updateMyGround(){//TODO triangulation
     if(points.length>2){
         myGroundGeo=new THREE.Geometry();
         myGroundGeo.vertices = [];
         myGroundGeo.faces = [];
         scene.remove(myGround);
 
-        //suppr myGround si dans objects
-        /*
-        var index = objects.indexOf(myGround);
-        if (index > -1) {
-            objects.splice(index, 1);
-        }
-        */
         myGround=null;
         for(var i=0;i<points.length;i++){
-            myGroundGeo.vertices.push(points[i]);
+           myGroundGeo.vertices.push(points[i]);
         }
+
         //face
         for(var i=0;i<points.length-2;i++){
                 myGroundGeo.faces.push(new THREE.Face3(0,i+1,i+2));
         }
-       //alert(myGroundGeo.faces.length);
-        //material = new THREE.MeshBasicMaterial( { color: 'red', side:THREE.DoubleSide} );
+
         myGroundGeo.computeFaceNormals();
         myGroundGeo.computeCentroids();
         myGroundGeo.computeVertexNormals();
         myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
-        /*
-        for(var i=0;i<myGroundGeo.faces.length;i++){
-            var face = new THREE.Geometry();
-            face.faces.push(myGroundGeo.faces[i]);
-            meshFace = new THREE.Mesh( face, material );
-            objects.push(meshFace);
-            scene.add(meshFace);
-        }
-        */
-        //scene.add(myGround);
+        
+        myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
         myGround.position.set(0,1,0);
-        //objects.push(myGround);
         scene.add(myGround);
-        render();
     }
 }
 
-function getNearestWall(){
-    var minDist=99999999;
-    var nearestwall=null;
-    for(var i=0;i<walls.length;i++){
-        var dist=0;
-        var j;
-        for(j=0;j<walls[i].geometry.vertices.length;j++){
-            dist+=camera.position.distanceTo(walls[i].geometry.vertices[j]);
-        }
-        dist=dist/j;
-        if(dist<minDist){
-            minDist=dist;
-            nearestwall=walls[i];
-        }
-    }
-    return nearestwall;
-}
+
 
 function drawCircle(pos){
     var radius   = 5,
@@ -374,10 +310,9 @@ function render(){
 }
 
 function animate(){
+    controls.update();
+    checkWalls();
     requestAnimationFrame( animate );
     render();
 }
 
-function checkCollision(obj1, obj2){
-    
-}

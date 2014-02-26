@@ -21,16 +21,16 @@ $reponse = $bdd->query('SELECT * FROM objets');
         <script type="text/javascript" src="three.min.js"></script>
         <script type="text/javascript" src="jquery-1.9.1.js"></script>
         <script type="text/javascript" src="jquery-ui.js"></script>
+        <script src="OrbitControls.js"></script>
         <!--LIB-->
 
         <!--SCRIPTS-->
        	<script src="oXHR.js"></script>
-        <script type="text/javascript" src="ui.js"></script>
-        <script type="text/javascript" src="view.js"></script>
+        <script src="ui.js"></script>
+        <script src="view.js"></script>
         <!--SCRIPTS-->
 
-          <script>
-  </script>
+
     
      </body>
     <footer>
