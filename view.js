@@ -42,6 +42,7 @@ function init(){
     camera.rotation.x-=45 * (Math.PI / 180);
     scene.add(camera);
 
+    //controller camera
     controls = new THREE.OrbitControls( camera );
     controls.addEventListener( 'change', render );
 
@@ -74,9 +75,6 @@ function init(){
     myGroundGeo = new THREE.Geometry();
 
 
-
-    onMouseDownPosition = new THREE.Vector2();
-
     // on effectue le rendu de la scène
     render();
 
@@ -102,10 +100,11 @@ function addObject(p){
 }
 
 function onMouseDown(event){
-
     if(event.which==1){
+        var x = event.offsetX==undefined?event.layerX:event.offsetX;
+        var y = event.offsetX==undefined?event.layerY:event.offsetY;
         if(creation){
-            var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+            var vector = new THREE.Vector3((x / width)*2-1, -(y / height)*2+1,0.5);
             projector.unprojectVector(vector,camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
             var intersects = raycaster.intersectObject(groundMesh);
@@ -119,7 +118,7 @@ function onMouseDown(event){
                 createWalls();
             }
         }else{
-            var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+            var vector = new THREE.Vector3((x / width)*2-1, -(y / height)*2+1,0.5);
             projector.unprojectVector(vector,camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
             var intersects = raycaster.intersectObjects(objects);
@@ -135,7 +134,7 @@ function onMouseDown(event){
             }else{
                 selected=false;
                 selectedMesh=null;
-                var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
+                var vector = new THREE.Vector3((x / width)*2-1, -(y / height)*2+1,0.5);
                 projector.unprojectVector(vector,camera);
                 var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
                 var intersects = raycaster.intersectObject(myGround);
@@ -183,7 +182,19 @@ function onMouseMove(event){
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
                 test=true;
-                console.log("collision");
+                break;
+            }
+            var tmpObjs = [];
+            for(var i=0;i<objects.length;i++){
+                tmpObjs[i]=objects[i];
+            }
+            var index = tmpObjs.indexOf(selectedMesh);
+            tmpObjs.splice(index, 1);
+            collisionResults = ray.intersectObjects( tmpObjs );
+            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+            {
+                test=true;
+                break;
             }
         }
 

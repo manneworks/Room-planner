@@ -1,12 +1,18 @@
+
 init();
 
 function init(){
 
 	//desactive scrolling mousewheel
 	$(function() {
-   		$('body').mousedown(function(e){if(e.button==1)return false});
+   		$('body').mousedown(function(e){if(e.button==1)
+   			return false;
+   		});
 	});
 
+
+
+	//
     var mVwidth = document.getElementById('container').offsetWidth;
     var mVheight = document.getElementById('container').offsetHeight;
 
@@ -22,6 +28,7 @@ function init(){
 
 	var view = document.createElement('div');
 	view.id='view';
+	view.style.position='relative';//firefox
 	view.className='view';
 	view.style.width="75%";
 	view.style.height="75%";
@@ -69,7 +76,7 @@ function initMenu(sData){
             var i=0;
             var menu = document.getElementById('menu');
 
-            while (sData[i].length-1){                
+            while (sData[i].length){                
 
                 if (document.getElementById(sData[i]+"h2") == null){
   
