@@ -1,4 +1,3 @@
-
 init();
 
 function init(){
@@ -70,7 +69,7 @@ function initMenu(sData){
             var i=0;
             var menu = document.getElementById('menu');
 
-            while (sData[i].length){                
+            while (sData[i].length-1){                
 
                 if (document.getElementById(sData[i]+"h2") == null){
   
