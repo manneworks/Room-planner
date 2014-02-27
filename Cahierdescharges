@@ -6,15 +6,47 @@ Demande : Rapport (4 pages)
 		-Planning/ Agenda
 		Approche perso (technique)
 
-Intro
 
-Ce projet est à réaliser dans le cadre du semestre 4 du DUT Informatique. L’objectif est de produire une réalisation informatique en presque autonomie, en préparation du stage de fin d’études.
+Lamothe François                                                                                                              Groupe K
+Dilly Clément								     2014
+Copin Guillaume
+
+
+Cahier des charges : Web Room Planner
+
+
+
+Résumé : ce document constitue le cahier des charges pour le projet de Web Room Planner portant sur l’aménagement virtuel d’une pièce. Les éléments de validation qui permettront de s’assurer de la réussite du projet sont précisés.
+
+
+Organisation du cahier des charges :
+
+-	Introduction
+
+-	Description de la demande
+	 Critères de validation (objectifs que l'on se fixe pour considérer le projet comme réussit)
+
+-	Analyse de l’application
+	 Approches techniques
+	 Approches personnelles
+	 Planification du projet (description du travail sur un semainier)
+	 Illustration actuelle du projet
+
+-	Conclusion
+
+
+
+	        
+
+Introduction
+
+	Ce projet est à réaliser dans le cadre du semestre 4 du DUT Informatique. L’objectif est de produire une réalisation informatique en presque autonomie, en préparation du stage de fin d’études.
 
 Description de la demande
 	
-Le but du projet est de réaliser une application Web de Room Planner, en français « Aménageur d’espace ». Ce dernier est un logiciel permettant de visualiser virtuellement tout nouvel aménagement d’une pièce.
-
+	Le but du projet est de réaliser une application Web de Room Planner, en français « Aménageur d’espace ». Ce dernier est un logiciel permettant de visualiser virtuellement tout nouvel aménagement d’une pièce.
 Critères de validation :
+
 	Fonctions minimales/demandées :
 	
 	L’application doit, au minimum,  afficher une pièce avec un affichage fixe. Elle doit aussi gérer des actions utilisateur comme l’ajout d’un meuble et son déplacement ou la colorisation des murs et sols. L’interface doit être un minimum personnalisée (ajout de menus par exemple).
@@ -22,67 +54,72 @@ Critères de validation :
 	Fonctions souhaitables :
 	
 	Nous souhaiterions que l’application possède un système d’utilisateur, ainsi qu’une gestion de base de données (pour charger les objets présent et enregistrer le travail de l’utilisateur).
+	Nous souhaiterions pouvoir choisir l’orientation de la caméra ainsi que ses coordonnées.
+	Un système de création de pièce serait mis en place.
+	La personnalisation de la page principale serait visuellement améliorée.
+	La page principale possèderait des conditions générales d’utilisation.
 
-Nous souhaiterions pouvoir choisir l’orientation de la caméra ainsi que ses coordonnées.
-
-Un système de création de pièce serait mis en place.
-
-La personnalisation de la page principale serait visuellement améliorée.
-
-La page principale possèderait des conditions générales d’utilisation.
 
 
 
 Analyse de l’application 
 
-Approche personnelle (techniques) 
-Le langage utilisé pour l'écriture de ce logiciel est l'iJava, qui est le langage support du cours d'AP12. 
+Approches techniques 
 
-Contraintes de délai (nombre de semaine avant le rendu du cahier des charges) 
-Le projet débute le 26 octobre avec la présentation en cours des objectifs de cette activité. Ce projet s'organise autour de deux travaux : la constitution d'un cahier des charges (du 9 novembre au 31 décembre) et la réalisation du logiciel répondant à ce cahier des charges (peut débuter dès le 26 octobre et s'achève le 18 janvier). A partir de janvier, toutes les séances se dérouleront en TP et porteront sur le projet. 
+Les langages de développement utilisés pour ce projet sont HTML5/CSS3 qui nous permettent de gérer l’aspect graphique général de la page principale ainsi que  le contenu. Nous avons ensuite utilisé le PHP qui met en relation la base de données avec le projet, via AJAX qui permet ‘d’accéder ‘ à la base de données sans rafraichir la page. Et enfin nous avons utilisé le JavaScript ainsi que les librairies Three et JQuery (Three gérant le WebGl avec plus de facilité et JQuery qui nous permet de gérer l’interface utilisateur avec plus d’aisance).
+
+Afin de mener à bien ce projet nous avons utilisé : 
+ - SublimeText (pour la programmation)
+	 - WampServer (pour émuler un serveur web)
+	 - GitHub (pour le partage des fichiers)
+	 - Le navigateur Google Chrome (pour effectuer les tests) ainsi que sa console JavaScript (afin de détecter les erreurs éventuelles)
+
+
+Approches personnelles
+
+Ces langages n’étant pas enseigné dans notre formation, nous avons dû suivre un certain nombre de tutoriels sur internet (avec des sites tel que OpenClassRoom, Developpez ou Moodle).
+
 
 
 Planification du projet (description du travail sur un semainier) 
 
-Semaine du au : Définition du projet et recherche d’applications similaires sur Internet pour étudier différentes réalisations.
+Semaine du 27 jan. Au 02 fév. : Définition du projet et recherche d’applications similaires sur Internet pour étudier différentes réalisations. Confection du cahier des charges.
 
-Semaine du au : 
+Semaine du 03 fév. Au 09 fév. : Création du squelette de l’interface (html contenant l’application ainsi que la feuille de style). Recherches concernant le développement 3D (WebGl) et tests. 
 
+Semaine du 10 fév. Au 16 fév. : Création de la base de donnée contenant les différents objets. Modification de la gestion de caméra (Fixe à mobile) ainsi que la gestion des objets (Modification par boutons). Création du sol et des murs par l’utilisateur.
 
-Semaine du au :
+Semaine du 17 fév. Au 23 fév. : Modification de la page HTML en PHP (pour la base de données) et gestion du menu sur cette dernière en relation avec la base de données.
 
+Semaine du 24 fév. Au 02 mar. : Personnalisation de la page PHP et CSS. Modification de la gestion de la camera (avec la souris et non les boutons). Gestion des collisions entre les objets.
 
-Semaine du au :
+Semaine du 03 mar. Au 09 mar. : Gestion des utilisateurs (Base de données). Création d’un menu de modification d’objets (couleurs...)
 
+Semaine du 10 mar. Au 16 mar. : Enregistrement possible de la scène (avec gestion utilisateur).
 
-Semaine du au :
-
-
-Semaine du au :
-
-
-Semaine du au :
+Semaine du 17 mar. Au 23 mar. : Finalisation du projet ainsi que du rapport.
 
 
-Semaine du au :
+
+Illustration actuelle du projet
 
 
-Semaine du au :
 
-Semaine du 7 nov. au 22 nov. : Définition du projet et recherche de logiciels similaires sur Internet pour étudier différentes réalisations et éventuellement affiner le cahier des charges. 
 
-Semaines du 22 nov. au 5 déc. : Rédaction du premier jet du cahier des charges sur les parties « Introduction » et « Description de la demande ». 
-Premières réflexion sur les données à représenter et à manipuler dans le logiciel. 
 
-Semaines du 5 déc. au 12 déc. : Rédaction finale du cahier des charges sur les parties « Introduction » et « Description de la demande ». 
-Rédaction du premier jet de la partie « Analyse du logiciel » et premières expérimentations au niveau du code. 
 
-Semaines du 12 déc. au 19 déc. : Rédaction du deuxième jet de la partie « Analyse du logiciel » et premiers prototypes d'une ou des fonctionnalités de base. 
-Progression sur les fonctionnalités permettant d'atteindre l'objectif « fonctions minimales » du cahier des charges. 
 
-Semaines du 19 déc. au 2 jan. : Finalisation du cahier des charges. 
 
-Semaine du 2 jan. au 9 jan. : Progression sur les fonctionnalités permettant d'atteindre l'objectif « fonctions souhaitables » du cahier des charges. 
 
-Semaines du 9 jan. au 16 jan. : Progression sur les fonctionnalités permettant d'atteindre l'objectif« fonctions demandées » du cahier des charges.
 
+
+
+
+
+
+
+
+
+Conclusion
+
+	Ce projet qui vient mettre un terme au dernier semestre du DUT Informatique nous permet d’apprendre de nouveaux langages de programmation (tel que le PHP par exemple), et de travailler sur la technologie web en général. Cela nous permet aussi de nous perfectionner à la gestion d’un projet à plusieurs qui nous sera utile en premier lieu, lors de notre stage de fin d’étude.
