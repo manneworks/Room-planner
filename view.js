@@ -19,6 +19,8 @@ var offset = new THREE.Vector3();
 var creation = true;
 var points= [];
 
+var loader = new THREE.JSONLoader();
+
 init();
 animate();
 
@@ -86,17 +88,32 @@ function init(){
 
 
 
-
 function addObject(p){
     //var material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/metal.jpg') } );
-    material = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
+    //test sphere
+   /* material = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
     var geometry = new THREE.SphereGeometry( 50, 32, 32 );
     var mesh = new THREE.Mesh( geometry, material );
     objects.push(mesh);
     mesh.position.x=p.x;
     mesh.position.y=p.y+50;
     mesh.position.z=p.z;
-    scene.add(mesh);
+    scene.add(mesh);*/
+
+    //json model
+
+    loader.load( "models/bed.js", function( geometry ) {
+        var mat = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
+        var mesh = new THREE.Mesh( geometry, mat );
+        geometry.computeFaceNormals();
+        mesh.position.set(0, 0, 0);
+        var s = 10;
+        mesh.scale.set(s, s, s);
+        scene.add(mesh);
+        objects.push(mesh);
+    });
+
+
 }
 
 function onMouseDown(event){
@@ -161,7 +178,18 @@ function onMouseMove(event){
 
         if(clone==null){
             clone = selectedMesh.clone();
-            clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0} );
+            clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
+            var box=null;
+            clone.traverse(function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.geometry.computeBoundingBox();
+                box = clone.geometry.boundingBox;
+                console.log("have a box of "+box);
+            }
+            });
+            console.log(box)
+            geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z);
+            clone.geometry= geo;
             scene.add(clone);
         }
         if(intersects[0]!=null){
@@ -171,7 +199,15 @@ function onMouseMove(event){
         }
 
         var test = false;
-        console.log(clone.position);
+        //delimiter obj dans une boite
+        
+
+    
+
+
+
+
+        console.log(clone.geometry.vertices.length);
         for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){       
             var localVertex = clone.geometry.vertices[vertexIndex].clone();
             var globalVertex = localVertex.applyMatrix4(clone.matrix);
@@ -181,6 +217,7 @@ function onMouseMove(event){
             var collisionResults = ray.intersectObjects( walls );
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
+                console.log("collision w/ wall");
                 test=true;
                 break;
             }
@@ -193,6 +230,7 @@ function onMouseMove(event){
             collisionResults = ray.intersectObjects( tmpObjs );
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
+                console.log("collision w/ obj");
                 test=true;
                 break;
             }

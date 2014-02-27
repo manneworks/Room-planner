@@ -76,7 +76,7 @@ function initMenu(sData){
             var i=0;
             var menu = document.getElementById('menu');
 
-            while (sData[i].length-1){                
+            while (sData[i].length){                
 
                 if (document.getElementById(sData[i]+"h2") == null){
   
