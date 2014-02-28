@@ -1,9 +1,20 @@
 /*CSS*/
 
+*
+{
+font-family: Ubuntu,"Comic Sans MS", cursive, serif;
+}
+
 html, body
 {
 	text-align:center;
 }
+
+.logo img
+{
+	width:800px;
+}
+
 
 #container
 {
@@ -12,4 +23,39 @@ html, body
 	margin:auto;
 	border: 3px solid black;
 
+}
+
+
+
+
+.espaceMembre
+{
+	font-size:12px;
+	text-align:right;
+	width:900px;
+	margin:auto;
+}
+
+
+
+/* ----------------------------- Styles formulaire -----------------------------*/
+
+fieldset label
+{
+	text-align:right;
+	
+}
+
+label
+{
+  	display: block; /* La balise devient de type block. */
+  	width: 220px;
+	float: left;
+}
+
+.formInscription
+{
+	display: inline-block;
+	vertical-align: top;
+	text-align: justify;
 }
