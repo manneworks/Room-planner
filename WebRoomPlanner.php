@@ -70,14 +70,13 @@
 			}
         ?> 
         
-        <!--http://www.monlogoperso.be/logo/dessiner-->
-        <a class="logo" title="Web Room Planner" alt="Accueil"> 
-        <img src="logo/titrea<?php 
-			if(date("s")%2==0){ 
-				echo 1;
-			}else{
-				echo 2;
-			};?>.png"> </a>     
+        <!--<a class="logo" title="Web Room Planner" alt="Accueil"> 
+        <img src="logo/titrea<?php// 
+			//if(date("s")%2==0){ 
+			//	echo 1;
+			//}else{
+			//	echo 2;
+			//};?>.png"> </a>  -->   
         
     	<div id="container"></div>
 
