@@ -1,6 +1,36 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
-$reponse = $bdd->query('SELECT * FROM objets');
+
+	session_start();
+	
+	$bdd = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
+	$objets = $bdd->query('SELECT * FROM objets');
+	$utilisateurs = $bdd->query('SELECT * FROM utilisateurs');
+	
+	$erreur="";
+	
+	if (isset($_POST['pseudo']) && isset($_POST['MotPasse'])){
+		while ($donnee = $utilisateurs->fetch()){	
+			if ($_POST['pseudo'] == $donnee['pseudo']){
+				if (sha1($_POST['MotPasse']) == $donnee['motDePasse']){
+					$_SESSION['connect']=1;
+					$erreur = "";
+					
+					$_SESSION['pseudo']=$donnee['pseudo'];
+					$_SESSION['nom']=$donnee['nom'];
+					$_SESSION['prenom']=$donnee['prenom'];
+					$_SESSION['fonction']=$donnee['fonction'];
+				} else {
+					$erreur = "Mot de passe incorrect";
+				}
+			} else {
+				$_SESSION['connect']=0;
+				$erreur = "Login ou Mot de passe incorrect";
+			}
+		}
+	}
+
+	
+	
 ?>
 
 <!DOCTYPE html>
@@ -9,12 +39,46 @@ $reponse = $bdd->query('SELECT * FROM objets');
         <meta charset="utf-8" />
         <title>Web Room Planner</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="styleaD.php" media="all" />
     </head>
 
 
     <body>
-    	<h1> Web Room Planner !</h1>
-    	       
+        <?php  
+			
+			if ($_SESSION['connect']==0){
+				     
+				echo ("
+					<div class=\"espaceMembre\">
+					
+						 <form  method=\"post\" action=\"WebRoomPlanner.php\">
+							<p>
+								".$erreur."
+								<input type=\"text\" name=\"pseudo\" id=\"pseudo\" placeHolder=\"Nom d'utilisateur\" width=\"40px\" required/>
+								<input type=\"password\" name=\"MotPasse\" id=\"MotPasse\" placeHolder=\"Mot de passe\" />
+								<input type=\"submit\" value=\"Connexion\" />
+								<a href=\"inscription.php\">Inscription</a>
+							</p>
+						</form>	
+					</div>
+					"); 
+			
+			}else if ($_SESSION['connect']==1){
+				
+				echo ("<p class=\"espaceMembre\">".$_SESSION['prenom']." ".$_SESSION['nom'].", vous &ecirc;tes connect&eacute; <a href=\"deconnexion.php\">D&eacute;connexion</a></p>");
+				
+			}
+        ?> 
+        
+        <!--http://www.monlogoperso.be/logo/dessiner-->
+        <a class="logo" title="Web Room Planner" alt="Accueil"> 
+        <img src="logo/titrea<?php 
+			if(date("s")%2==0){ 
+				echo 1;
+			}else{
+				echo 2;
+			};?>.png"> </a>     
+        
     	<div id="container"></div>
 
         <!--LIB-->
