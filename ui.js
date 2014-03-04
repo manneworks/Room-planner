@@ -1,6 +1,10 @@
-init();
 
-function init(){
+var uiLoaded=false;
+var objSelectedId=null;
+
+initUI();
+
+function initUI(){
 
 	//desactive scrolling mousewheel
 	$(function() {
@@ -74,8 +78,8 @@ function initMenu(sData){
 
             var i=0;
             var menu = document.getElementById('menu');
-
-            while (sData[i].length-1){                
+            console.log(sData.length)
+            while (i < sData.length-1){                
 
                 if (document.getElementById(sData[i]+"h2") == null){
   
@@ -99,23 +103,25 @@ function initMenu(sData){
                
                 var div = document.getElementById(sData[i]+"div");
                 var p = document.createElement('p');
+                p.className='models';
                 p.id = sData[i+1];
                 var text = document.createTextNode(sData[i+1]);
                 
                 div.appendChild(p);
                 p.appendChild(text);
+
+                p.addEventListener('mousedown',function(){
+                	objSelectedId=this.id;
+                	console.log(objSelectedId);
+                },false);
             
 
                 i+=2;   
             }
 
-        $(function() {
-            $("#menu").accordion({heightStyle: "content"});
-        });
+	        $(function() {
+	            $("#menu").accordion({heightStyle: "content"});
+	        });
 
-
+	        uiLoaded=true;
         }
-
-        
-
-
