@@ -21,10 +21,16 @@ var points= [];
 
 var loader = new THREE.JSONLoader();
 
-init();
+var objHandler = null;
+
+var clone=null;
+var ysz=0;
+
+
+initView();
 animate();
 
-function init(){
+function initView(){
     // on initialise le moteur de rendu
     renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -76,6 +82,9 @@ function init(){
     //myGround
     myGroundGeo = new THREE.Geometry();
 
+    //loadObj
+    objHandler = new ObjectHandler();
+    objHandler.loadObjs();
 
     // on effectue le rendu de la scène
     render();
@@ -101,19 +110,23 @@ function addObject(p){
     scene.add(mesh);*/
 
     //json model
-
+/*
     loader.load( "models/bed.js", function( geometry ) {
         var mat = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
         var mesh = new THREE.Mesh( geometry, mat );
         geometry.computeFaceNormals();
-        mesh.position.set(0, 0, 0);
+        mesh.position.set(p.x, p.y, p.z);
         var s = 10;
         mesh.scale.set(s, s, s);
         scene.add(mesh);
         objects.push(mesh);
     });
+*/
 
-
+    mesh = objHandler.getMesh(objSelectedId).clone();
+    mesh.position.set(p.x, p.y, p.z);
+    scene.add(mesh);
+    objects.push(mesh);
 }
 
 function onMouseDown(event){
@@ -166,9 +179,11 @@ function onMouseDown(event){
 function onMouseUp(event){
     selected=false;
     selectedMesh=null;
+    scene.remove(clone);
+    clone=null;
 }
 
-var clone=null;
+
 function onMouseMove(event){
     if(selected){
         var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
@@ -183,31 +198,22 @@ function onMouseMove(event){
             clone.traverse(function ( child ) {
             if ( child instanceof THREE.Mesh ) {
                 child.geometry.computeBoundingBox();
-                box = clone.geometry.boundingBox;
-                console.log("have a box of "+box);
+                box = child.geometry.boundingBox;
+                console.log(box);
             }
             });
-            console.log(box)
             geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z);
-            clone.geometry= geo;
+            ysz=((box.max.y*clone.scale.y)-(box.min.y*clone.scale.y))/2;
+            clone.geometry=geo;
             scene.add(clone);
         }
         if(intersects[0]!=null){
             mse = intersects[0].point.sub(offset);
             clone.position.copy(mse);
-
+            clone.position.y+=ysz;
         }
 
         var test = false;
-        //delimiter obj dans une boite
-        
-
-    
-
-
-
-
-        console.log(clone.geometry.vertices.length);
         for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){       
             var localVertex = clone.geometry.vertices[vertexIndex].clone();
             var globalVertex = localVertex.applyMatrix4(clone.matrix);
@@ -217,7 +223,6 @@ function onMouseMove(event){
             var collisionResults = ray.intersectObjects( walls );
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
-                console.log("collision w/ wall");
                 test=true;
                 break;
             }
@@ -230,7 +235,6 @@ function onMouseMove(event){
             collisionResults = ray.intersectObjects( tmpObjs );
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
-                console.log("collision w/ obj");
                 test=true;
                 break;
             }
@@ -238,6 +242,7 @@ function onMouseMove(event){
 
         if(!test){
            selectedMesh.position.copy(clone.position);
+           selectedMesh.position.y-=ysz;
         }
         return;
     }
@@ -274,7 +279,7 @@ function getNearestWall(obj){
     return nearestwall;
 }
 
-function createWalls(){
+function createWalls(){//100=1m
     var p1,p2;
     for(var i=0;i<points.length;i++){
 
