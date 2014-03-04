@@ -46,7 +46,7 @@
     <body>
         <?php  
 			
-			if ($_SESSION['connect']==0){
+			if (!isset($_SESSION['connect'])){
 				     
 				echo ("
 					<div class=\"espaceMembre\">
@@ -63,7 +63,7 @@
 					</div>
 					"); 
 			
-			}else if ($_SESSION['connect']==1){
+			}else{
 				
 				echo ("<p class=\"espaceMembre\">".$_SESSION['prenom']." ".$_SESSION['nom'].", vous &ecirc;tes connect&eacute; <a href=\"deconnexion.php\">D&eacute;connexion</a></p>");
 				
@@ -88,6 +88,7 @@
         <!--LIB-->
 
         <!--SCRIPTS-->
+        <script src="objectsHandler.js"></script>
        	<script src="oXHR.js"></script>
         <script src="ui.js"></script>
         <script src="view.js"></script>
