@@ -1,28 +1,116 @@
-			          	WebRoomPlanner :
-
-		              Cahier des charges.
-
-1. Présentation du projet et de la réponse souhaitée :
+Lamothe François                                                                                                              Groupe K
+Dilly Clément								     2014
+Copin Guillaume
 
 
-Fonction minimale : 
-
-Nous aimerions réaliser ce projet en 3D.
--Une pièce au moins.
--Des objets.
--Déplacement des objets.
-
-Caméra fixe
-
-Gestion d'une base de donnée pour les objets à l'intérieur des menus.
-
-Affichage de la pièce en milieu de page, pièce fixe.
-Gestion des utilisateurs (2 profils) dont un qui peut créer lui même ses pièces et un designer qui lui pourrait créer des objets.
-
-Fonction souhaitée :
+Cahier des charges : Web Room Planner
 
 
 
-Plusieurs boutons sur la page principale : Déplacer,Créer,Identification,Contact et Conditions générales d'utilisation.
-Possibilité de tracer soit meme une pièce (vu 2D pour dessiner et 3D pour placer les objets)
+Résumé : ce document constitue le cahier des charges pour le projet de Web Room Planner portant sur l’aménagement virtuel d’une pièce. Les éléments de validation qui permettront de s’assurer de la réussite du projet sont précisés.
 
+
+Organisation du cahier des charges :
+
+-	Introduction
+
+-	Description de la demande
+	 Critères de validation (objectifs que l'on se fixe pour considérer le projet comme réussit)
+
+-	Analyse de l’application
+	 Approches techniques
+	 Approches personnelles
+	 Planification du projet (description du travail sur un semainier)
+	 Illustration actuelle du projet
+
+-	Conclusion
+
+
+
+	        
+
+Introduction
+
+	Ce projet est à réaliser dans le cadre du semestre 4 du DUT Informatique. L’objectif est de produire une réalisation informatique en presque autonomie, en préparation du stage de fin d’études.
+
+Description de la demande
+	
+	Le but du projet est de réaliser une application Web de Room Planner, en français « Aménageur d’espace ». Ce dernier est un logiciel permettant de visualiser virtuellement tout nouvel aménagement d’une pièce.
+Critères de validation :
+
+	Fonctions minimales/demandées :
+	
+	L’application doit, au minimum,  afficher une pièce avec un affichage fixe. Elle doit aussi gérer des actions utilisateur comme l’ajout d’un meuble et son déplacement ou la colorisation des murs et sols. L’interface doit être un minimum personnalisée (ajout de menus par exemple).
+
+	Fonctions souhaitables :
+	
+	Nous souhaiterions que l’application possède un système d’utilisateur, ainsi qu’une gestion de base de données (pour charger les objets présent et enregistrer le travail de l’utilisateur).
+	Nous souhaiterions pouvoir choisir l’orientation de la caméra ainsi que ses coordonnées.
+	Un système de création de pièce serait mis en place.
+	La personnalisation de la page principale serait visuellement améliorée.
+	La page principale possèderait des conditions générales d’utilisation.
+
+
+
+
+Analyse de l’application 
+
+Approches techniques 
+
+Les langages de développement utilisés pour ce projet sont HTML5/CSS3 qui nous permettent de gérer l’aspect graphique général de la page principale ainsi que  le contenu. Nous avons ensuite utilisé le PHP qui met en relation la base de données avec le projet, via AJAX qui permet ‘d’accéder ‘ à la base de données sans rafraichir la page. Et enfin nous avons utilisé le JavaScript ainsi que les librairies Three et JQuery (Three gérant le WebGl avec plus de facilité et JQuery qui nous permet de gérer l’interface utilisateur avec plus d’aisance).
+
+Afin de mener à bien ce projet nous avons utilisé : 
+ - SublimeText (pour la programmation)
+	 - WampServer (pour émuler un serveur web)
+	 - GitHub (pour le partage des fichiers)
+	 - Le navigateur Google Chrome (pour effectuer les tests) ainsi que sa console JavaScript (afin de détecter les erreurs éventuelles)
+
+
+Approches personnelles
+
+Ces langages n’étant pas enseignés dans notre formation, nous avons dû suivre un certain nombre de tutoriels sur internet (avec des sites tel que OpenClassRoom, Developpez ou Moodle).
+
+
+
+Planification du projet (description du travail sur un semainier) 
+
+Semaine du 27 jan. Au 02 fév. : Définition du projet et recherche d’applications similaires sur Internet pour étudier différentes réalisations. Confection du cahier des charges.
+
+Semaine du 03 fév. Au 09 fév. : Création du squelette de l’interface (html contenant l’application ainsi que la feuille de style). Recherches concernant le développement 3D (WebGl) et tests. 
+
+Semaine du 10 fév. Au 16 fév. : Création de la base de donnée contenant les différents objets. Modification de la gestion de caméra (Fixe à mobile) ainsi que la gestion des objets (Modification par boutons). Création du sol et des murs par l’utilisateur.
+
+Semaine du 17 fév. Au 23 fév. : Modification de la page HTML en PHP (pour la base de données) et gestion du menu sur cette dernière en relation avec la base de données.
+
+Semaine du 24 fév. Au 02 mar. : Personnalisation de la page PHP et CSS. Modification de la gestion de la camera (avec la souris et non les boutons). Gestion des collisions entre les objets.
+
+Semaine du 03 mar. Au 09 mar. : Gestion des utilisateurs (Base de données). Création d’un menu de modification d’objets (couleurs...)
+
+Semaine du 10 mar. Au 16 mar. : Enregistrement possible de la scène (avec gestion utilisateur).
+
+Semaine du 17 mar. Au 23 mar. : Finalisation du projet ainsi que du rapport.
+
+
+
+Illustration actuelle du projet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Conclusion
+
+	Ce projet qui vient mettre un terme au dernier semestre du DUT Informatique nous permet d’apprendre de nouveaux langages de programmation (tel que le PHP par exemple), et de travailler sur la technologie web en général. Cela nous permet aussi de nous perfectionner à la gestion d’un projet à plusieurs qui nous sera utile en premier lieu, lors de notre stage de fin d’étude.
