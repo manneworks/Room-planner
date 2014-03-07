@@ -96,7 +96,56 @@ function initView(){
     document.getElementById('view').addEventListener('mousedown',onMouseDown,false);
     document.getElementById('view').addEventListener('mouseup',onMouseUp,false);
     document.getElementById('view').addEventListener('mousemove',onMouseMove,false);
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
+}
 
+
+function handleKeyDown(e){
+    var unicode=e.keyCode? e.keyCode : e.charCode;
+    if(selectedMesh==null){
+        return;
+    }
+    if(unicode == 37){
+        selectedMesh.rotation.y+= Math.PI / 180;
+        scene.remove(clone);
+        clone=null;
+    }else if(unicode == 39){
+        selectedMesh.rotation.y-= Math.PI / 180;
+        scene.remove(clone);
+        clone=null;
+    }
+}
+
+function handleKeyUp(e){
+    if(selectedMesh!=null && clone==null){
+        updateClone();
+        clone.position.y+=ysz;
+    }
+}
+
+function updateClone(){
+    if(clone==null){
+        clone = selectedMesh.clone();
+       // clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
+        clone.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
+        var box=null;
+        clone.traverse(function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+            child.geometry.computeBoundingBox();
+            box = child.geometry.boundingBox;
+            console.log(box);
+        }
+        });  
+        zsz = (((box.max.z*clone.scale.z)-(box.min.z*clone.scale.z)));
+        segments = Math.round((zsz/20));
+        console.log("segments: "+segments);
+        geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z,segments,segments,segments);
+        ysz=((box.max.y*clone.scale.y)-(box.min.y*clone.scale.y))/2;
+        clone.geometry=geo;
+        scene.add(clone);
+        console.log("nbVertices: "+clone.geometry.vertices.length);
+    }
 }
 
 
@@ -172,27 +221,8 @@ function onMouseMove(event){
         var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
         var intersects = raycaster.intersectObject(myGround);
 
-        if(clone==null){
-            clone = selectedMesh.clone();
-           // clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
-            clone.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
-            var box=null;
-            clone.traverse(function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-                child.geometry.computeBoundingBox();
-                box = child.geometry.boundingBox;
-                console.log(box);
-            }
-            });  
-            zsz = (((box.max.z*clone.scale.z)-(box.min.z*clone.scale.z)));
-            segments = Math.round((zsz/20));
-            console.log("segments: "+segments);
-            geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z,segments,segments,segments);
-            ysz=((box.max.y*clone.scale.y)-(box.min.y*clone.scale.y))/2;
-            clone.geometry=geo;
-            scene.add(clone);
-            console.log("nbVertices: "+clone.geometry.vertices.length);
-        }
+        updateClone();
+
         if(intersects[0]!=null){
             mse = intersects[0].point.sub(offset);
             clone.position.copy(mse);
@@ -200,7 +230,13 @@ function onMouseMove(event){
         }
 
         var test = false;
-        for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){       
+        var cpt=0;
+        for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){
+            //TODO calcul vecteur deplacement
+            if(clone.geometry.vertices[vertexIndex].y+ysz >= ysz)  {
+                continue;
+            } 
+            cpt++;
             var localVertex = clone.geometry.vertices[vertexIndex].clone();
             var globalVertex = localVertex.applyMatrix4(clone.matrix);
             var directionVector = globalVertex.sub( clone.position );
@@ -225,6 +261,7 @@ function onMouseMove(event){
                 break;
             }
         }
+        console.log(cpt +"pts utilisés sur: "+clone.geometry.vertices.length);
 
         if(!test){
            selectedMesh.position.copy(clone.position);
@@ -405,41 +442,6 @@ function animate(){
 
         var allpts = mpts.concat();
         var shape = [];
-
-        //test bounds + Steiner pts
-/*      
-        minX=mpts[0].x;
-        maxX=mpts[0].x;
-        minY=mpts[0].y;
-        maxY=mpts[0].y;
-        for (var p in mpts) {
-            if(mpts[p].x<minX){
-                minX=mpts[p].x;
-            }
-            if(mpts[p].y<minY){
-                minY=mpts[p].y;
-            }
-            if(mpts[p].x>maxX){
-                maxX=mpts[p].x;
-            }
-            if(mpts[p].y>maxY){
-                maxY=mpts[p].y;
-            }
-        }
-        shape.push(new js.poly2tri.Point(minX, minY));
-        shape.push(new js.poly2tri.Point(minX, maxY));
-        shape.push(new js.poly2tri.Point(maxX, maxY));
-        shape.push(new js.poly2tri.Point(maxX, minY));
-
-        console.log(shape);
-
-        var swctx = new js.poly2tri.SweepContext(shape);
-
-        for (var p in mpts) {
-            swctx.AddPoint(new js.poly2tri.Point(mpts[p].x, mpts[p].y));
-        }
-*/
-
 
         for (var p in pts) {
             shape.push(new js.poly2tri.Point(pts[p].x, pts[p].y));
