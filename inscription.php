@@ -3,7 +3,6 @@
 	session_start();
 
 	$bdd = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
-	$utilisateurs = $bdd->query('SELECT * FROM utilisateurs');
 	
 	$erreur = "";
 	$donneeInscription = 0;
@@ -28,6 +27,7 @@
 				$_SESSION['pseudo'] = $_POST['pseudo'];
 				$_SESSION['nom'] = $_POST['nom'];
 				$_SESSION['prenom'] = $_POST['prenom'];
+				$_SESSION['fonction'] = $_POST['fonction'];
 				
 				$bdd->query("INSERT INTO `projet`.`utilisateurs` (`id`, `pseudo`, `motDePasse`, `nom`, `prenom`, `fonction`) VALUES (NULL, '".$_POST['pseudo']."', '".sha1($_POST['passwd'])."', '".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['fonction']."');");
 			}	
@@ -50,13 +50,16 @@
 
     <body>
     	<article>
-        <a class="logo" title="Web Room Planner" alt="Accueil"> 
-        <img src="logo/titre<?php 
-			if(date("s")%2==0){ 
-				echo 1;
-			}else{
-				echo 2;
-			};?>.png"> </a>
+       		<a class="logo" title="Web Room Planner" alt="Accueil">
+       		<?php
+        		if ($donneeInscription == 1 && $_SESSION['fonction'] == 'arc'){
+					echo "<img src=\"logo/titre1.png\">";
+				} else if ($donneeInscription == 1 && $_SESSION['fonction'] == 'deco') {
+					echo "<img src=\"logo/titre2.png\">";
+				} else  {
+					echo "<img src=\"logo/titre3.png\">";
+				}
+        	?></a>
             
         </article> 
         
@@ -79,7 +82,7 @@
 								<p><label for=\"fonction\">Fonction : </label> 
 								   <select name=\"fonction\" id=\"fonction\">
 										<option value=\"\"></option>
-										<option value=\"architecte\">Architecte</option>
+										<option value=\"arc\">Architecte</option>
 										<option value=\"deco\">D&eacute;corateur d'int&eacute;rieur</option>
 										<option value=\"autre\">Autre</option>
 								   </select>
