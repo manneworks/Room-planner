@@ -4,15 +4,20 @@
 	
 	$bdd = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
 	$objets = $bdd->query('SELECT * FROM objets');
-	$utilisateurs = $bdd->query('SELECT * FROM utilisateurs');
 	
 	$erreur="";
 	
+	
+
 	if (isset($_POST['pseudo']) && isset($_POST['MotPasse'])){
-		while ($donnee = $utilisateurs->fetch()){	
+	
+		$utilisateurs = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo = '".$_POST['pseudo']."'");
+
+		if ($donnee = $utilisateurs->fetch()){	
 			if ($_POST['pseudo'] == $donnee['pseudo']){
 				if (sha1($_POST['MotPasse']) == $donnee['motDePasse']){
 					$_SESSION['connect']=1;
+					$boolean=true;
 					$erreur = "";
 					
 					$_SESSION['pseudo']=$donnee['pseudo'];
@@ -22,15 +27,12 @@
 				} else {
 					$erreur = "Mot de passe incorrect";
 				}
-			} else {
-				$_SESSION['connect']=0;
-				$erreur = "Login ou Mot de passe incorrect";
 			}
+		} else {
+			$_SESSION['connect']=0;
+			$erreur = "Login ou Mot de passe incorrect";
 		}
 	}
-
-	
-	
 ?>
 
 <!DOCTYPE html>
@@ -39,13 +41,13 @@
         <meta charset="utf-8" />
         <title>Web Room Planner</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
-        <link rel="stylesheet" type="text/css" href="styleD.php" media="all" />
-        <link rel="stylesheet" type="text/css" href="tooltip.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="styleD.php" />
     </head>
 
 
     <body>
         <?php  
+			
 			if (!isset($_SESSION['connect']) || $_SESSION['connect']==0){
 				     
 				echo ("
@@ -71,14 +73,29 @@
         ?> 
         
         <a class="logo" title="Web Room Planner" alt="Accueil"> 
-        <img src="logo/titre<?php 
-			if(date("s")%2==0){ 
-				echo 1;
-			}else{
-				echo 2;
-			};?>.png"> </a>   
+
+		<?php 
+			if (isset($_SESSION['fonction'])) {
+				if ($_SESSION['fonction']=="arc") {
+					echo "<img src=\"logo/titre1.png\">";
+				} else if ($_SESSION['fonction']=="deco") {
+					echo "<img src=\"logo/titre2.png\">";
+				} else {
+					echo "<img src=\"logo/titre3.png\">";
+				}
+			} else {
+					echo "<img src=\"logo/titre3.png\">";
+			}
+		?>	
+
         
     	<div id="container"></div>
+
+    	<?php 
+    		if (isset($_SESSION['fonction'])) {
+    			echo "<script> var fonction = \"".$_SESSION['fonction']."\" </script>";
+    		}
+    	?>
 
         <!--LIB-->
         <script src="three.min.js"></script>
