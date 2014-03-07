@@ -39,14 +39,13 @@
         <meta charset="utf-8" />
         <title>Web Room Planner</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
-        <link rel="stylesheet" type="text/css" href="styleaD.php" media="all" />
+        <link rel="stylesheet" type="text/css" href="styleD.php" media="all" />
     </head>
 
 
     <body>
         <?php  
-			
-			if (!isset($_SESSION['connect'])){
+			if (!isset($_SESSION['connect']) || $_SESSION['connect']==0){
 				     
 				echo ("
 					<div class=\"espaceMembre\">
@@ -70,21 +69,22 @@
 			}
         ?> 
         
-        <!--<a class="logo" title="Web Room Planner" alt="Accueil"> 
-        <img src="logo/titrea<?php// 
-			//if(date("s")%2==0){ 
-			//	echo 1;
-			//}else{
-			//	echo 2;
-			//};?>.png"> </a>  -->   
+        <a class="logo" title="Web Room Planner" alt="Accueil"> 
+        <img src="logo/titre<?php 
+			if(date("s")%2==0){ 
+				echo 1;
+			}else{
+				echo 2;
+			};?>.png"> </a>   
         
     	<div id="container"></div>
 
         <!--LIB-->
-        <script type="text/javascript" src="three.min.js"></script>
-        <script type="text/javascript" src="jquery-1.9.1.js"></script>
-        <script type="text/javascript" src="jquery-ui.js"></script>
+        <script src="three.min.js"></script>
+        <script src="jquery-1.9.1.js"></script>
+        <script src="jquery-ui.js"></script>
         <script src="OrbitControls.js"></script>
+        <script src="poly2tri.js"></script>
         <!--LIB-->
 
         <!--SCRIPTS-->

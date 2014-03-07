@@ -3,12 +3,16 @@ var renderer, scene, camera, width, height, projector;
 var groundMesh,myGroundGeo,myGround;
 var particleMaterial;
 
+var texture = THREE.ImageUtils.loadTexture('textures/brickwall.png')
+
 var baseMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
+//var baseMaterial = new THREE.MeshPhongMaterial( { map: texture, side:THREE.DoubleSide, shading: THREE.SmoothShading } );
 var invMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading , transparent: true, opacity: 0.1} );
 
 var controls;
 
 var objects = [];
+
 var circles=[];
 var walls=[];
 
@@ -98,31 +102,6 @@ function initView(){
 
 
 function addObject(p){
-    //var material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('img/metal.jpg') } );
-    //test sphere
-   /* material = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
-    var geometry = new THREE.SphereGeometry( 50, 32, 32 );
-    var mesh = new THREE.Mesh( geometry, material );
-    objects.push(mesh);
-    mesh.position.x=p.x;
-    mesh.position.y=p.y+50;
-    mesh.position.z=p.z;
-    scene.add(mesh);*/
-
-    //json model
-/*
-    loader.load( "models/bed.js", function( geometry ) {
-        var mat = new THREE.MeshLambertMaterial( { color: 'grey', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
-        var mesh = new THREE.Mesh( geometry, mat );
-        geometry.computeFaceNormals();
-        mesh.position.set(p.x, p.y, p.z);
-        var s = 10;
-        mesh.scale.set(s, s, s);
-        scene.add(mesh);
-        objects.push(mesh);
-    });
-*/
-
     mesh = objHandler.getMesh(objSelectedId).clone();
     mesh.position.set(p.x, p.y, p.z);
     scene.add(mesh);
@@ -152,6 +131,7 @@ function onMouseDown(event){
             projector.unprojectVector(vector,camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
             var intersects = raycaster.intersectObjects(objects);
+           
             if(intersects.length > 0){
                 selected=true;
                 selectedMesh=intersects[0].object;
@@ -176,13 +156,14 @@ function onMouseDown(event){
     }
 }
 
+
+
 function onMouseUp(event){
     selected=false;
     selectedMesh=null;
     scene.remove(clone);
     clone=null;
 }
-
 
 function onMouseMove(event){
     if(selected){
@@ -193,7 +174,8 @@ function onMouseMove(event){
 
         if(clone==null){
             clone = selectedMesh.clone();
-            clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
+           // clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
+            clone.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
             var box=null;
             clone.traverse(function ( child ) {
             if ( child instanceof THREE.Mesh ) {
@@ -201,11 +183,15 @@ function onMouseMove(event){
                 box = child.geometry.boundingBox;
                 console.log(box);
             }
-            });
-            geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z);
+            });  
+            zsz = (((box.max.z*clone.scale.z)-(box.min.z*clone.scale.z)));
+            segments = Math.round((zsz/20));
+            console.log("segments: "+segments);
+            geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z,segments,segments,segments);
             ysz=((box.max.y*clone.scale.y)-(box.min.y*clone.scale.y))/2;
             clone.geometry=geo;
             scene.add(clone);
+            console.log("nbVertices: "+clone.geometry.vertices.length);
         }
         if(intersects[0]!=null){
             mse = intersects[0].point.sub(offset);
@@ -232,7 +218,7 @@ function onMouseMove(event){
             }
             var index = tmpObjs.indexOf(selectedMesh);
             tmpObjs.splice(index, 1);
-            collisionResults = ray.intersectObjects( tmpObjs );
+            collisionResults = ray.intersectObjects(tmpObjs);
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
             {
                 test=true;
@@ -308,7 +294,7 @@ function createWalls(){//100=1m
 }
 
 function updateMyGround(){//TODO triangulation
-    if(points.length>2){
+   /* if(points.length>2){
         myGroundGeo=new THREE.Geometry();
         myGroundGeo.vertices = [];
         myGroundGeo.faces = [];
@@ -326,9 +312,51 @@ function updateMyGround(){//TODO triangulation
 
         myGroundGeo.computeFaceNormals();
         myGroundGeo.computeCentroids();
-        myGroundGeo.computeVertexNormals();
+        myGroundGeo.computeVertexNormals();       
         myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
-        
+        myGround.position.set(0,1,0);
+        scene.add(myGround);
+    }*/
+
+    //Triangulation ...
+    if(points.length>2){  
+        myGroundGeo=new THREE.Geometry();
+        myGroundGeo.vertices = [];
+        myGroundGeo.faces = [];
+        scene.remove(myGround);
+
+        myGround=null;
+        for(var i=0;i<points.length;i++){
+           myGroundGeo.vertices.push(points[i]);
+        }
+
+        //face test1 three shape utils
+       /* holes = [];
+        faces = THREE.Shape.Utils.triangulateShape ( myGroundGeo.vertices, holes );
+        for(var i=0;i<faces.length;i++){
+            face = faces[i];
+            myGroundGeo.faces.push(new THREE.Face3(face[0],face[1],face[2]));
+        }*/
+
+        //face test poly2tri
+        holes = [];
+
+        pts = [];
+        for(var i=0;i<points.length;i++){
+           pts.push(new THREE.Vector2(points[i].x,points[i].z));
+           console.log(pts);
+        }
+
+        faces = triangulate2(pts, holes);
+        for(var i=0;i<faces.length;i++){
+            face = faces[i];
+            myGroundGeo.faces.push(new THREE.Face3(face[0],face[1],face[2]));
+        }
+
+        console.log(myGroundGeo.faces);
+        myGroundGeo.computeFaceNormals();
+        myGroundGeo.computeCentroids();
+        myGroundGeo.computeVertexNormals();       
         myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
         myGround.position.set(0,1,0);
         scene.add(myGround);
@@ -369,4 +397,97 @@ function animate(){
     requestAnimationFrame( animate );
     render();
 }
+
+
+ function triangulate2( mpts, holes ) {
+
+        // For use with Poly2Tri.js
+
+        var allpts = mpts.concat();
+        var shape = [];
+
+        //test bounds + Steiner pts
+/*      
+        minX=mpts[0].x;
+        maxX=mpts[0].x;
+        minY=mpts[0].y;
+        maxY=mpts[0].y;
+        for (var p in mpts) {
+            if(mpts[p].x<minX){
+                minX=mpts[p].x;
+            }
+            if(mpts[p].y<minY){
+                minY=mpts[p].y;
+            }
+            if(mpts[p].x>maxX){
+                maxX=mpts[p].x;
+            }
+            if(mpts[p].y>maxY){
+                maxY=mpts[p].y;
+            }
+        }
+        shape.push(new js.poly2tri.Point(minX, minY));
+        shape.push(new js.poly2tri.Point(minX, maxY));
+        shape.push(new js.poly2tri.Point(maxX, maxY));
+        shape.push(new js.poly2tri.Point(maxX, minY));
+
+        console.log(shape);
+
+        var swctx = new js.poly2tri.SweepContext(shape);
+
+        for (var p in mpts) {
+            swctx.AddPoint(new js.poly2tri.Point(mpts[p].x, mpts[p].y));
+        }
+*/
+
+
+        for (var p in pts) {
+            shape.push(new js.poly2tri.Point(pts[p].x, pts[p].y));
+        }
+
+        var swctx = new js.poly2tri.SweepContext(shape);
+
+
+        for (var h in holes) {
+            var aHole = holes[h];
+            var newHole = []
+            for (i in aHole) {
+                newHole.push(new js.poly2tri.Point(aHole[i].x, aHole[i].y));
+                allpts.push(aHole[i]);
+            }
+            swctx.AddHole(newHole);
+        }
+
+        var find;
+        var findIndexForPt = function (pt) {
+            find = new THREE.Vector2(pt.x, pt.y);
+            var p;
+            for (p=0, pl = allpts.length; p<pl; p++) {
+                if (allpts[p].equals(find)) return p;
+            }
+            return -1;
+        };
+
+        // triangulate
+        js.poly2tri.sweep.Triangulate(swctx);
+
+        var triangles =  swctx.GetTriangles();
+        var tr ;
+        var facesPts = [];
+        for (var t in triangles) {
+            tr =  triangles[t];
+            facesPts.push([
+                findIndexForPt(tr.GetPoint(0)),
+                findIndexForPt(tr.GetPoint(1)),
+                findIndexForPt(tr.GetPoint(2))
+                    ]);
+        }
+
+
+    //  console.log(facesPts);
+    //  console.log("triangles", triangles.length, triangles);
+
+        // Returns array of faces with 3 element each
+    return facesPts;
+    }
 
