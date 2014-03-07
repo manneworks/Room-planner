@@ -1,0 +1,17 @@
+Planification du projet (description du travail sur un semainier) 
+
+Semaine du 27 jan. Au 02 fév. : Définition du projet et recherche d’applications similaires sur Internet pour étudier différentes réalisations. Confection du cahier des charges.
+
+Semaine du 03 fév. Au 09 fév. : Création du squelette de l’interface (html contenant l’application ainsi que la feuille de style). Recherches concernant le développement 3D (WebGl) et tests. 
+
+Semaine du 10 fév. Au 16 fév. : Création de la base de donnée contenant les différents objets. Modification de la gestion de caméra (Fixe à mobile) ainsi que la gestion des objets (Modification par boutons). Création du sol et des murs par l’utilisateur.
+
+Semaine du 17 fév. Au 23 fév. : Modification de la page HTML en PHP (pour la base de données) et gestion du menu sur cette dernière en relation avec la base de données.
+
+Semaine du 24 fév. Au 02 mar. : Personnalisation de la page PHP et CSS. Modification de la gestion de la camera (avec la souris et non les boutons). Gestion des collisions entre les objets.
+
+Semaine du 03 mar. Au 09 mar. : Gestion des utilisateurs (Base de données). Création d’un menu de modification d’objets (couleurs...)
+
+Semaine du 10 mar. Au 16 mar. : Enregistrement possible de la scène (avec gestion utilisateur).
+
+Semaine du 17 mar. Au 23 mar. : Finalisation du projet ainsi que du rapport.
