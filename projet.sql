@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- GÃ©nÃ©rÃ© le: Ven 28 FÃ©vrier 2014 Ã  22:25
+-- Généré le: Ven 07 Mars 2014 à 13:29
 -- Version du serveur: 5.6.12-log
--- Version de PHP: 5.4.12
+-- Version de PHP: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de donnÃ©es: `projet`
+-- Base de données: `projet`
 --
 CREATE DATABASE IF NOT EXISTS `projet` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `projet`;
@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS `objets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` text NOT NULL,
   `categorie` text NOT NULL,
-  `lien` text NOT NULL,
+  `description` text NOT NULL,
+  `image` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
@@ -54,12 +55,12 @@ CREATE TABLE IF NOT EXISTS `objets` (
 -- Contenu de la table `objets`
 --
 
-INSERT INTO `objets` (`id`, `nom`, `categorie`, `lien`) VALUES
-(1, 'Lit', 'Chambre', ''),
-(2, 'Chaise', 'Cuisine', ''),
-(3, 'Lavabo', 'Salle de bain', ''),
-(4, 'Table', 'Cuisine', ''),
-(5, 'Lavabo', 'Cuisine', '');
+INSERT INTO `objets` (`id`, `nom`, `categorie`, `description`, `image`) VALUES
+(1, 'Lit', 'Chambre', 'Ensemble literie contant :\r\n- Le lit \r\n- Le sommier\r\n- Un matelas \r\n\r\nLiterie entièrement en chêne.\r\nMatelas en mousse, confort 100%.\r\n\r\nDimension 160x200', 'ImagesElements/Lit.jpg'),
+(2, 'Chaise', 'Cuisine', 'Chaise de cuisine. \r\n\r\nRésistante et solide, fabrication artisanale. \r\nMatière principale : acajou \r\nDimension : 100x46x55', 'ImagesElements/Chaise.jpg'),
+(3, 'Lavabo', 'Salle de bain', 'Lavabo de salle de bain. \r\n\r\nMatière : céramique\r\nHauteur : 120 cm', 'ImagesElements/LavaboS.jpg'),
+(4, 'Table', 'Cuisine', 'Table de cuisine. \r\n\r\nEntièrement en bois (cerisier) pouvant accueillir jusqu''à huit personnes.\r\nVernis et très robuste.', 'ImagesElements/Table.jpg'),
+(5, 'Lavabo', 'Cuisine', 'Lavabo de salle de cuisine. \r\n\r\nMatière : céramique\r\nHauteur : 120 cm', 'ImagesElements/LavaboC.jpg');
 
 -- --------------------------------------------------------
 
