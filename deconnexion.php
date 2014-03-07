@@ -3,6 +3,12 @@
 	session_start();
 	
 	$_SESSION['connect']=0;
+	$_SESSION['pseudo'] ="";
+	$_SESSION['nom'] = "";
+	$_SESSION['prenom'] = "";
+	$_SESSION['fonction'] = "";
+
+	session_destroy();
 
 ?>
 
@@ -11,20 +17,15 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>D&eacute;connecion</title>
+        <title>D&eacute;connexion</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <link rel="stylesheet" type="text/css" href="styleD.php" media="all" />
     </head>
 
 	 <body>
     	<article>
-        <a class="logo" title="Web Room Planner" alt="Accueil"> 
-        <img src="logo/titre<?php 
-			if(date("s")%2==0){ 
-				echo 1;
-			}else{
-				echo 2;
-			};?>.png"> </a>
+        	<a class="logo" title="Web Room Planner" alt="Accueil"> 
+        	<img src="logo/titre3.png"> </a>
             
         </article> 
         
