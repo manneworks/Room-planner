@@ -9,9 +9,13 @@
 			$test = "Divers";
 			echo $test.":";
 			echo $donnee['nom'].":";
+			/*echo $donnee['description'].":";
+			echo $donnee['image'].":";*/
 		}else{
 			echo $donnee['categorie'].":";
 			echo $donnee['nom'].":";
+			/*echo $donnee['description'].":";
+			echo $donnee['image'].":";*/
 		
 	}
 }
