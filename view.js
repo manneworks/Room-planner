@@ -3,15 +3,16 @@ var renderer, scene, camera, width, height, projector;
 var groundMesh,myGroundGeo,myGround;
 var particleMaterial;
 
-var texture = THREE.ImageUtils.loadTexture('textures/brickwall.png')
 
-var baseMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
-//var baseMaterial = new THREE.MeshPhongMaterial( { map: texture, side:THREE.DoubleSide, shading: THREE.SmoothShading } );
-var invMaterial = new THREE.MeshLambertMaterial( { color: 'red', side:THREE.DoubleSide, shading: THREE.SmoothShading , transparent: true, opacity: 0.1} );
+var wireMaterial = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
+var invisibleMaterial = new THREE.MeshLambertMaterial( {transparent: true, opacity: 0.0} );
+var baseMaterial = new THREE.MeshLambertMaterial( { color:'red', side:THREE.DoubleSide, shading: THREE.SmoothShading } );
+var invMaterial = new THREE.MeshLambertMaterial( { color:'red', side:THREE.DoubleSide, shading: THREE.SmoothShading , transparent: true, opacity: 0.1} );
 
 var controls;
 
 var objects = [];
+var objectsBounds = [];
 
 var circles=[];
 var walls=[];
@@ -28,8 +29,9 @@ var loader = new THREE.JSONLoader();
 var objHandler = null;
 
 var clone=null;
+var xsz=0;
 var ysz=0;
-
+var zsz=0;
 
 initView();
 animate();
@@ -108,10 +110,12 @@ function handleKeyDown(e){
     }
     if(unicode == 37){
         selectedMesh.rotation.y+= Math.PI / 180;
+        objectsBounds[ objects.indexOf(selectedMesh) ].rotation.y+=Math.PI / 180;
         scene.remove(clone);
         clone=null;
     }else if(unicode == 39){
         selectedMesh.rotation.y-= Math.PI / 180;
+        objectsBounds[ objects.indexOf(selectedMesh) ].rotation.y-=Math.PI / 180;
         scene.remove(clone);
         clone=null;
     }
@@ -128,8 +132,7 @@ function updateClone(){
     if(clone==null){
         clone = selectedMesh.clone();
        // clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
-        clone.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
-        var box=null;
+        clone.material = wireMaterial;
         clone.traverse(function ( child ) {
         if ( child instanceof THREE.Mesh ) {
             child.geometry.computeBoundingBox();
@@ -137,11 +140,12 @@ function updateClone(){
             console.log(box);
         }
         });  
-        zsz = (((box.max.z*clone.scale.z)-(box.min.z*clone.scale.z)));
-        segments = Math.round((zsz/20));
+        zsz = (((box.max.z*clone.scale.z)-(box.min.z*clone.scale.z)))/2;
+        segments = Math.round((zsz/15)); ;
         console.log("segments: "+segments);
         geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z,segments,segments,segments);
         ysz=((box.max.y*clone.scale.y)-(box.min.y*clone.scale.y))/2;
+        xsz = ((box.max.x*clone.scale.x)-(box.min.x*clone.scale.x))/2;
         clone.geometry=geo;
         scene.add(clone);
         console.log("nbVertices: "+clone.geometry.vertices.length);
@@ -155,6 +159,25 @@ function addObject(p){
     mesh.position.set(p.x, p.y, p.z);
     scene.add(mesh);
     objects.push(mesh);
+
+    c = mesh.clone();
+   // clone.material=new THREE.MeshLambertMaterial( { transparent: true, opacity: 0.5} );
+    //c.material = wireMaterial;
+    c.material=invisibleMaterial;
+    var box=null;
+    c.traverse(function ( child ) {
+    if ( child instanceof THREE.Mesh ) {
+        child.geometry.computeBoundingBox();
+        box = child.geometry.boundingBox;
+    }
+    });  
+    var czsz = (((box.max.z*c.scale.z)-(box.min.z*c.scale.z)))/2;
+    segments = Math.round((czsz/15));;
+    geo = new THREE.CubeGeometry(box.max.x-box.min.x, box.max.y-box.min.y, box.max.z-box.min.z,segments,segments,segments);
+    c.geometry=geo;
+    c.position.y+= ((box.max.y*c.scale.y)-(box.min.y*c.scale.y))/2;
+    scene.add(c);
+    objectsBounds.push(c);
 }
 
 function onMouseDown(event){
@@ -214,8 +237,10 @@ function onMouseUp(event){
     clone=null;
 }
 
+
 function onMouseMove(event){
     if(selected){
+        //collisions
         var vector = new THREE.Vector3((event.offsetX / width)*2-1, -(event.offsetY / height)*2+1,0.5);
         projector.unprojectVector(vector,camera);
         var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
@@ -229,18 +254,28 @@ function onMouseMove(event){
             clone.position.y+=ysz;
         }
 
-        var test = false;
+        //liste obj a test
+        var tmpObjs = [];
+            for(var i=0;i<objectsBounds.length;i++){
+                tmpObjs[i]=objectsBounds[i];
+            }
+        var index = objects.indexOf(selectedMesh);
+        tmpObjs.splice(index, 1);
+
+
+        //collisionbox
+        var selectedCollisionBox = objectsBounds[index];
+
         var cpt=0;
+        var test=false;
         for (var vertexIndex = 0; vertexIndex < clone.geometry.vertices.length; vertexIndex++){
-            //TODO calcul vecteur deplacement
-            if(clone.geometry.vertices[vertexIndex].y+ysz >= ysz)  {
-                continue;
-            } 
             cpt++;
+
             var localVertex = clone.geometry.vertices[vertexIndex].clone();
             var globalVertex = localVertex.applyMatrix4(clone.matrix);
             var directionVector = globalVertex.sub( clone.position );
 
+            //raycasting
             var ray = new THREE.Raycaster( clone.position, directionVector.clone().normalize() );
             var collisionResults = ray.intersectObjects( walls );
             if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
@@ -248,27 +283,50 @@ function onMouseMove(event){
                 test=true;
                 break;
             }
-            var tmpObjs = [];
-            for(var i=0;i<objects.length;i++){
-                tmpObjs[i]=objects[i];
+
+            //test box contains pts
+            var inBox=false;
+            var testpts = new THREE.Vector3(globalVertex.x+clone.position.x,0,globalVertex.z+clone.position.z)
+        
+            //console.log(testpts);
+            for(var objBoxId in tmpObjs){
+                objBox = tmpObjs[objBoxId];
+                if( RectContains(objBox.rotation.y,objBox.position.x,objBox.position.z,objBox.geometry.width,objBox.geometry.depth, testpts.x,testpts.z) ){
+                    inBox=true;;
+                    break;
+                }
             }
-            var index = tmpObjs.indexOf(selectedMesh);
-            tmpObjs.splice(index, 1);
-            collisionResults = ray.intersectObjects(tmpObjs);
-            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-            {
+            if(inBox){
                 test=true;
                 break;
             }
+
+            
         }
         console.log(cpt +"pts utilisés sur: "+clone.geometry.vertices.length);
+        
 
         if(!test){
            selectedMesh.position.copy(clone.position);
            selectedMesh.position.y-=ysz;
+           selectedCollisionBox.position.copy(clone.position);
         }
         return;
     }
+}
+
+function RectContains(rotation,rx,ry,rwidth,rheight,x,y){ //rx ry, centre du rectangle
+    var c = Math.cos(-rotation);
+    var s = Math.sin(-rotation);
+
+    var rotatedX = rx+c*(x-rx)-s*(y-ry);
+    var rotatedY = ry+s*(x-rx)+c*(y-ry);
+
+    var leftX = rx-rwidth/2;
+    var rightX = rx+rwidth/2;
+    var topY = ry-rheight/2;
+    var bottomY = ry+rheight/2;
+    return leftX <= rotatedX && rotatedX <= rightX && topY <= rotatedY && rotatedY <=bottomY;
 }
 
 function checkWalls(){
@@ -330,30 +388,7 @@ function createWalls(){//100=1m
     }
 }
 
-function updateMyGround(){//TODO triangulation
-   /* if(points.length>2){
-        myGroundGeo=new THREE.Geometry();
-        myGroundGeo.vertices = [];
-        myGroundGeo.faces = [];
-        scene.remove(myGround);
-
-        myGround=null;
-        for(var i=0;i<points.length;i++){
-           myGroundGeo.vertices.push(points[i]);
-        }
-
-        //face
-        for(var i=0;i<points.length-2;i++){
-                myGroundGeo.faces.push(new THREE.Face3(0,i+1,i+2));
-        }
-
-        myGroundGeo.computeFaceNormals();
-        myGroundGeo.computeCentroids();
-        myGroundGeo.computeVertexNormals();       
-        myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
-        myGround.position.set(0,1,0);
-        scene.add(myGround);
-    }*/
+function updateMyGround(){
 
     //Triangulation ...
     if(points.length>2){  
@@ -367,15 +402,6 @@ function updateMyGround(){//TODO triangulation
            myGroundGeo.vertices.push(points[i]);
         }
 
-        //face test1 three shape utils
-       /* holes = [];
-        faces = THREE.Shape.Utils.triangulateShape ( myGroundGeo.vertices, holes );
-        for(var i=0;i<faces.length;i++){
-            face = faces[i];
-            myGroundGeo.faces.push(new THREE.Face3(face[0],face[1],face[2]));
-        }*/
-
-        //face test poly2tri
         holes = [];
 
         pts = [];
@@ -393,7 +419,7 @@ function updateMyGround(){//TODO triangulation
         console.log(myGroundGeo.faces);
         myGroundGeo.computeFaceNormals();
         myGroundGeo.computeCentroids();
-        myGroundGeo.computeVertexNormals();       
+        myGroundGeo.computeVertexNormals();    
         myGround = new THREE.Mesh( myGroundGeo, baseMaterial );
         myGround.position.set(0,1,0);
         scene.add(myGround);
@@ -431,7 +457,9 @@ function render(){
 function animate(){
     controls.update();
     checkWalls();
-    requestAnimationFrame( animate );
+    setTimeout( function() {
+        requestAnimationFrame( animate );
+    }, 1000 / 30 );
     render();
 }
 
