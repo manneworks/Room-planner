@@ -75,53 +75,111 @@ function requestMenu(callback){
 
        
 function initMenu(sData){
-
-            var i=0;
-            var menu = document.getElementById('menu');
-            console.log(sData.length)
-            while (i < sData.length-1){                
-
-                if (document.getElementById(sData[i]+"h2") == null){
-  
-                    var h2 = document.createElement('h2');
-                    h2.className='togglers';
-                    var text = document.createTextNode(sData[i]);
-                    menu.appendChild(h2);
-                    h2.appendChild(text);
-                    h2.id = sData[i] + "h2";
-
-                    var div = document.createElement('div');
-                    div.id = sData[i] + "div";
-                    div.className='content';
-
-                    menu.appendChild(div);
+    console.log(fonction);
+    var menu = document.getElementById('menu');
+    if(fonction!='arc'){
+        loadObjMenu(sData);
+    }
+    if(fonction !='deco'){
+        loadPre();
+    }
+    if(fonction!='null'){
+        loadOptionMenu();
+    }
+    
 
 
-                }
+    $(function() {
+        $("#menu").accordion({heightStyle: "content" ,collapsible: true, active: false});
+    });
+
+    uiLoaded=true;
+}
+
+function loadPre(){
+     var h2 = document.createElement('h2');
+    h2.className='togglers';
+    var text = document.createTextNode('Pieces');
+    menu.appendChild(h2);
+    h2.appendChild(text);
+    h2.id = "prefabh2";
+
+    var div = document.createElement('div');
+    div.id = "prefabdiv";
+    div.className='content';
+
+    menu.appendChild(div);
+
+    var div = document.getElementById('prefabdiv');
+    var p = document.createElement('p');
+    p.className='models';
+    p.id='test';
+    var text = document.createTextNode('test');
+    div.appendChild(p);
+    p.appendChild(text);
+}
 
 
-               
-                var div = document.getElementById(sData[i]+"div");
-                var p = document.createElement('p');
-                p.className='models';
-                p.id = sData[i+1];
-                var text = document.createTextNode(sData[i+1]);
-                
-                div.appendChild(p);
-                p.appendChild(text);
 
-                p.addEventListener('mousedown',function(){
-                	objSelectedId=this.id;
-                	console.log(objSelectedId);
-                },false);
-            
+function loadOptionMenu(){
+    var h2 = document.createElement('h2');
+    h2.className='togglers';
+    var text = document.createTextNode('Options');
+    menu.appendChild(h2);
+    h2.appendChild(text);
+    h2.id = "options";
 
-                i+=2;   
-            }
+    var div = document.createElement('div');
+    div.id = "optionsdiv";
+    div.className='content';
 
-	        $(function() {
-	            $("#menu").accordion({heightStyle: "content"});
-	        });
+    menu.appendChild(div);
 
-	        uiLoaded=true;
+    //Options
+    var optionsString = ['Enregistrer','Charger','Gérer projet'];
+    for(var str in optionsString){
+        var div = document.getElementById('optionsdiv');
+        var p = document.createElement('p');
+        p.className='options';
+        p.id=optionsString[str];
+        var text = document.createTextNode(optionsString[str]);
+        div.appendChild(p);
+        p.appendChild(text);
+    }
+}
+
+function loadObjMenu(sData){
+    var i=0;
+    var menu = document.getElementById('menu');
+    while (i < sData.length-1){                
+        if (document.getElementById(sData[i]+"h2") == null){
+            var h2 = document.createElement('h2');
+            h2.className='togglers';
+            var text = document.createTextNode(sData[i]);
+            menu.appendChild(h2);
+            h2.appendChild(text);
+            h2.id = sData[i] + "h2";
+            var div = document.createElement('div');
+            div.id = sData[i] + "div";
+            div.className='content';
+            menu.appendChild(div);
         }
+        var div = document.getElementById(sData[i]+"div");
+        var p = document.createElement('p');
+        p.className='models';
+        p.id = sData[i+1];
+        var text = document.createTextNode(sData[i+1]);
+        div.appendChild(p);
+        p.appendChild(text);
+        p.addEventListener('mousedown',function(){
+            objSelectedId=this.id;
+            console.log(objSelectedId);
+        },false);
+        p.addEventListener('mouseover',function(){
+            console.log("ici");
+            tooltip.pop(this,"Test Tooltip",{position:1,offsetX:-20, effect:'slide'});
+        },false);
+
+        i+=2;   
+    }
+}
