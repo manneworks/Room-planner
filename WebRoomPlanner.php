@@ -42,6 +42,7 @@
         <title>Web Room Planner</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <link rel="stylesheet" type="text/css" href="styleD.php" />
+        <link rel="stylesheet" type="text/css" href="tooltip.css" />
     </head>
 
 
@@ -90,12 +91,14 @@
 
         
     	<div id="container"></div>
+    	<script> var fonction = 'null' </script>
 
     	<?php 
     		if (isset($_SESSION['fonction'])) {
-    			echo "<script> var fonction = \"".$_SESSION['fonction']."\" </script>";
+    			echo "<script> fonction = \"".$_SESSION['fonction']."\" </script>";
     		}
     	?>
+
 
         <!--LIB-->
         <script src="three.min.js"></script>
