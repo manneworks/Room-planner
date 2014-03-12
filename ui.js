@@ -174,10 +174,6 @@ function loadObjMenu(sData){
             objSelectedId=this.id;
             console.log(objSelectedId);
         },false);
-        p.addEventListener('mouseover',function(){
-            console.log("ici");
-            tooltip.pop(this,"Test Tooltip",{position:1,offsetX:-20, effect:'slide'});
-        },false);
 
 	 p.addEventListener('mouseover',function(){
                     console.log("OK");
