@@ -1,4 +1,3 @@
-
 var uiLoaded=false;
 var objSelectedId=null;
 
@@ -180,6 +179,11 @@ function loadObjMenu(sData){
             tooltip.pop(this,"Test Tooltip",{position:1,offsetX:-20, effect:'slide'});
         },false);
 
+	 p.addEventListener('mouseover',function(){
+                    console.log("OK");
+                    tooltip.pop(this, "Test", {position:1,offsetX:-20, effect:'slide'});
+         },false);
+	
         i+=2;   
     }
 }
