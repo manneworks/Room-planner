@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 07 Mars 2014 à 13:29
+-- Généré le: Mer 12 Mars 2014 à 10:23
 -- Version du serveur: 5.6.12-log
 -- Version de PHP: 5.4.16
 
@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS `objets` (
 --
 
 INSERT INTO `objets` (`id`, `nom`, `categorie`, `description`, `image`) VALUES
-(1, 'Lit', 'Chambre', 'Ensemble literie contant :\r\n- Le lit \r\n- Le sommier\r\n- Un matelas \r\n\r\nLiterie entièrement en chêne.\r\nMatelas en mousse, confort 100%.\r\n\r\nDimension 160x200', 'ImagesElements/Lit.jpg'),
-(2, 'Chaise', 'Cuisine', 'Chaise de cuisine. \r\n\r\nRésistante et solide, fabrication artisanale. \r\nMatière principale : acajou \r\nDimension : 100x46x55', 'ImagesElements/Chaise.jpg'),
-(3, 'Lavabo', 'Salle de bain', 'Lavabo de salle de bain. \r\n\r\nMatière : céramique\r\nHauteur : 120 cm', 'ImagesElements/LavaboS.jpg'),
-(4, 'Table', 'Cuisine', 'Table de cuisine. \r\n\r\nEntièrement en bois (cerisier) pouvant accueillir jusqu''à huit personnes.\r\nVernis et très robuste.', 'ImagesElements/Table.jpg'),
-(5, 'Lavabo', 'Cuisine', 'Lavabo de salle de cuisine. \r\n\r\nMatière : céramique\r\nHauteur : 120 cm', 'ImagesElements/LavaboC.jpg');
+(1, 'Lit', 'Chambre', 'Ensemble literie contenant :<br> - Le lit <br> - Le sommier <br>- Un matelas <br> <br> Literie enti&egrave;rement en ch&ecirc;ne. <br>Matelas en mousse, confort 100%. <br> <br>Dimension 160x200', 'ImagesElements/Lit.jpg'),
+(2, 'Chaise', 'Cuisine', 'Chaise de cuisine.<br><br> R&eacute;sistante et solide, fabrication artisanale.<br>Mati&egrave;re principale : acajou <br>Dimension : 100x46x55', 'ImagesElements/Chaise.jpg'),
+(3, 'Lavabo', 'Salle de bain', 'Lavabo de salle de bain.<br><br>Mati&egrave;re : c&eacute;ramique<br>Hauteur : 120 cm', 'ImagesElements/LavaboS.jpg'),
+(4, 'Table', 'Cuisine', 'Table de cuisine.<br><br>Enti&egrave;rement en bois (cerisier) pouvant accueillir jusqu''&agrave; huit personnes.<br>Vernis et tr&egrave;s robuste.', 'ImagesElements/Table.jpg'),
+(5, 'Lavabo', 'Cuisine', 'Lavabo de cuisine.<br><br>Mati&egrave;re : c&eacute;ramique<br>Hauteur : 120 cm\n', 'ImagesElements/LavaboC.jpg');
 
 -- --------------------------------------------------------
 
