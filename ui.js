@@ -66,7 +66,7 @@ function requestMenu(callback){
 
                 if(xhr.readyState == 4) { 
 
-                   callback(xhr.responseText.split(":")); 
+                   callback(xhr.responseText.split("~")); 
 
            } 
      }   
