@@ -175,11 +175,18 @@ function loadObjMenu(sData){
             console.log(objSelectedId);
         },false);
 
-	 p.addEventListener('mouseover',function(){
-                    console.log("OK");
-                    tooltip.pop(this, "Test", {position:1,offsetX:-20, effect:'slide'});
-         },false);
-	
-        i+=2;   
+        var txt= document.createElement('txt');
+	txt=sData[i+2];
+        setTooltip(txt,p);
+               
+
+        i+=4;    
     }
 }
+
+ function setTooltip(txt,p){
+    p.addEventListener('mouseover',function(){
+            tooltip.pop(this, txt, {position:1,offsetX:-20, effect:'slide'});
+    },false);
+
+ } 
