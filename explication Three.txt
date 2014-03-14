@@ -1,0 +1,60 @@
+rapport:
+
+Camera:
+Perspective camera, déplaçable avec la souris (clic droit/molette: rotation, déplacement sur tt les axes)
+
+
+
+La partie rendu 3D de l'application a été réalisé grace a la librairie Three.js
+la scene contient initialement:
+-une caméra, que l'utilisateur peut déplacer en utilisant sa souris ( rotation/déplacement sur tout les axes via la molette et le clic droit)
+-une skybox, cube texturé, ciel, environnement..
+-un plan fixe d'une taille de 10*10 metres servant de base a la construction des pieces.
+
+Il est en effet possible de "dessiner" sa propre piece en cliquant sur le plan afin d'y ajouter des points, 
+ces points forment un polygon qui est ensuite triangulé grace a la librairie poly2tri.js afin de décomposer le polygon
+en face triangulaire et ainsi créer une forme qui peut etre géré par three.js
+
+Cette étape de triangulation est necessaire afin de s'affranchir des contraintes de création de polygon imposé par Three.js,
+tel que le positionnement des points en sens inverse des aiguille d'une montre. Elle permet également de gérer avec une
+plus grande simplicité la création de polygon complexe
+
+Des murs sont ensuite créée , toujours en fonction des points créée par l'utilisateur.
+
+une fois l'étape de création d'une piece terminée , il est possible de placre des objets dans cette pieces, pour ce faire
+l'utilisateur doit cliquer a l'intérieur de la piece: pour déterminer si l'utilisateur clic a l'intérieur de la piece
+il faut dans un premier temps capturer l'évenement via javascript puis convertir ses données en point 3D et enfin
+grace a l'utilisation d'un Raycaster de Three.js déterminer si le point est dans la piece.
+
+Un objet est alors crée en fonction de l'item selectionné dans le menu, au moment du clic dans la piece l'objet 
+est instantannément visible, en effet tout les objets, enregistré au format JSON, sont préchargé au lancement de l'application
+
+
+L'objet créé peut ensuite etre déplacé avec le clic gauche de la souris sur les axes X et Z, (Y étant la hauteur)
+en respectant des contraintes de collision avec les objets, et avec les murs.
+
+Afin de réaliser ces collisions, les objets sont englobé dans des boites de deux types:
+Tout les objets ont une boite de leur dimension decrite par 8 points.
+Lorsqu'un objet est selectionné, une seconde boite est alors generé, une copie de la premiere boite a laquelle est
+appliqué une division, afin de multiplier le nombre de points.
+
+En effet, la précision des collisions est directement lié au nombre de points.
+Pour réaliser les collisions avec les murs, nous utilisons un lancé de rayon (raycaster) partant de chaque point de
+la boite de collision de l'objet vers les murs.
+
+Pour des raisons de performances l'utilisation d'un raycaster pour detecter les collisions avec les autres objets
+n'est pas possible. Nous avons dont utiliser un algorithme permettant de determiner si un point est a l'intérieur 
+d'un rectangle. En appliquant cet algorithme a tout les points de la boite de collision il est possible de determiner
+si la boite de collision entre en collision avec une autre boite.
+
+Pour deplacer un objet l'utilisateur doit cliquer sur celui ci, la methode permettant de determiner si l'utilisateur
+clic sur a l'interieur de la piece est réutilisé ici en appliquant le raycaster a tout les objets de la scene.
+
+tant que l'utilisateur maintient le clic gauche enfoncé la boite de collision de l'objet selectionné suit la souris
+en forcant la coordonnées Y (hauteur) de l'objet a 0 afin de n'autoriser les déplacement que sur les axes X et Z.
+
+Si aucune collision n'est detecté, la position de la boite de collision est copié sur l'objet , sinon seule la boite
+est deplacé tant qu'aucun emplacement sans collision n'est detecté.
+
+il est egalement possible de tourner un objet selectionné en utilisant les fleches directuonnelles du clavier.
+La rotation est elle aussi effectuer selon une contrainte, elle n'est appliqué que a l'axe Y.
