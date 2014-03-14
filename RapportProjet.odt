@@ -1,0 +1,112 @@
+Remerciement : 
+
+Nous tenons à remercier Monsieur Selosse, Monsieur Place, Damien Deconinck, et tout ceux qui nous ont aidé. 
+
+INTRODUCTION : 	
+
+Ce projet est à réaliser dans le cadre du semestre 4 du DUT Informatique. L’objectif est de produire une réalisation informatique en presque autonomie, en préparation du stage de fin d’études.
+	
+Le but du projet est de réaliser une application Web de Room Planner, en français « Aménageur d’espace ». Ce dernier est un logiciel permettant de visualiser virtuellement tout nouvel aménagement d’une pièce. Celui ci, permettra donc à l'utilisateur de créer une pièce et d'y positionner certains éléments.
+
+
+I)Contexte
+ 
+Cahier des charges :
+
+ Critères de validation :
+
+	Fonctions minimales/demandées :
+	
+	L’application doit, au minimum,  afficher une pièce avec un affichage fixe. Elle doit aussi gérer des actions utilisateur comme l’ajout d’un meuble et son déplacement ou la colorisation des murs et sols. L’interface doit être un minimum personnalisée (ajout de menus par exemple).
+
+	Fonctions souhaitables :
+	
+	Nous souhaiterions que l’application possède un système d’utilisateur, ainsi qu’une gestion de base de données (pour charger les objets présent et enregistrer le travail de l’utilisateur).
+	Nous souhaiterions pouvoir choisir l’orientation de la caméra ainsi que ses coordonnées.
+	Un système de création de pièce serait mis en place.
+	La personnalisation de la page principale serait visuellement améliorée.
+	La page principale possèderait des conditions générales d’utilisation.
+
+
+  Choix du thème : 
+
+Pour la réalisation de ce projet nous avons décidé de laisser à l'utilisateur le choix de la pièce qu'il souhaite réaliser. Pour se faire il peut donc créer son espace lui même et ensuite gérer son espace.
+
+
+
+  -utilisation de three.js
+L'utilisation de « three.js » été pour nous la plus simple, logique et la plus fiable.
+
+  -demarches (tutos, exercices, cours)
+
+Ces langages n’étant pas enseigné dans notre formation, nous avons dû suivre un certain nombre de tutoriels sur internet (avec des sites tel que OpenClassRoom, Developpez ou Moodle).
+Nous nous sommes donc entraîné auparavant sur des petits exemples (Création d'une sphère). 
+
+
+Developpement
+
+II : 
+  -HTML5/CSS3 
+
+L'utilisation d'HTML5 et CSS3 nous a été utile pour réaliser le support général de la page Web. Grâce au CSS nous avons pu modifier le style de notre page pour ainsi la rendre plus agréable et plus facile d'utilisation. Cela nous a permit aussi d'utiliser l'interface de programmation 3D WEBGL.
+
+JQUERY a été utiliser dans notre projet afin de réaliser le menu en accordéon ainsi que les tooltips (bulle d'aide) de celui-ci. Nous avons choisit JQUERY pour son design ainsi que l'utilisation simplifiée de celui ci, en effet pour réaliser ces deux éléments, JQUERY été beaucoup plus facile d'utilisation que JAVASCRIPT. 
+Le menu est crée a partir d'une base de donnée qui contient les différents éléments que l'utilisateur peut positionner dans sa pièce. Les tooltips sont ensuite générer en fonction de l'élément choisit dans le menu.
+
+
+  -WebGL/Three
+
+Pour commencer, nous avons réutiliser certaines fonctions de Three telles que la mise en place d'une scène qui contient une caméra (perspective), un plan et une skybox.
+
+
+Gestion caméra zoom etc
+    >camera
+    >position
+    >ray casting
+
+
+  -PHP / AJAX / BDD
+
+Une base de donnée a été créer pour mener à bien ce projet. Celle ci nous est très utile pour sauvegarder les différents utilisateurs mais elle s'avère aussi importante pour la gestion des objets.
+Plusieurs tables ont donc été crées : 
+
+	-Utilisateurs : contient les informations de chaques utilisateurs. Cette table contient le login, mot de passe (crypté) , nom, prénom ainsi que la fonction que l'utilisateur a choisit lors de la création de son compte. En effet, suivant le rôle qui a été choisit, celui ci a accès à différentes fonctionnalités de l'application WEB.
+
+	-Objet : contient les informations du menu ainsi que des bulles d'aides. Elle nous permet de récupérer le nom, la catégorie, la description ainsi que l'image de l'objet qu'elle réfère.
+Les noms des différents nous permettent de récupérer les fichiers JSON qui font référence au model 3D. Cette méthode nous permet de précharger les objets pour avoir une application plus fluide, nous permet également d'identifier l'objet choisit dans le menu pour ensuite pouvoir le placer dans la pièce.
+
+	-Enregistrement : contient une pièce ainsi que les positions des éventuels objet positionner dans celle ci. Ces informations seront stockées dans une chaîne de caractères. Chaque enregistrements possédera un identifiant et un nom de projet qui permettra aux utilisateurs de pouvoir accéder de nouveau à leurs créations.
+
+	-Projet : cette table permet de faire la relation entre les utilisateurs et un projet. Celle ci donnera l'accès aux différents concepteur  sur un projet définit. Elle contient donc un id de projet et un nom.
+  Grâce à l'AJAX qui nous permet de lier le JAVASCRIPT avec la base de données nous avons pu récupérer les différentes informations afin de les utiliser avec JQUERY.
+
+
+III)
+  1)Technique
+    -degres de liberté
+    -collisions
+  2)Personnel
+  3)Amelioration
+  4)Manque de temps
+  5)Conclusions personnelles
+  
+CONCLUSION
+ANNEXES
+NETOLOGIE
+
+
+Soutenance :
+
+  ~12min
+  ~diaporama powerpoint (ou pdf)
+    >1 diapo par min
+    -plan en 3 parties
+      meme que rapport
+    -pas d'animation
+    -pas de demo
+    
+  ~2 rapports imprimés
+  
+  ~solutions de secours
+  
+  ~lisible "beau"
