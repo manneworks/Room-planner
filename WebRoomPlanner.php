@@ -43,6 +43,7 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
         <link rel="stylesheet" type="text/css" href="styleD.php" />
         <link rel="stylesheet" type="text/css" href="tooltip.css" />
+        <link rel='stylesheet' type="text/css" href="colorPicker/spectrum/spectrum.css" />
     </head>
 
 
@@ -107,6 +108,7 @@
         <script src="OrbitControls.js"></script>
         <script src="poly2tri.js"></script>
         <script src="tooltips.js"></script>
+        <script src="colorPicker/spectrum/spectrum.js"></script>
         <!--LIB-->
 
         <!--SCRIPTS-->
@@ -115,8 +117,6 @@
         <script src="ui.js"></script>
         <script src="view.js"></script>
         <!--SCRIPTS-->
-
-
     
      </body>
     <footer>

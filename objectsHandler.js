@@ -21,6 +21,16 @@ ObjectHandler.prototype.getMesh = function(name){
 	return null;
 }
 
+ObjectHandler.prototype.getName = function(geo){
+	for(var i=0;i<this.objs.length;i++){
+		if(this.objs[i].getMesh().geometry==geo){
+			return this.objs[i].getName();
+		}
+	}
+	console.log("Error obj not found");
+	return null;
+}
+
 ObjectHandler.prototype.load = function(){
 	var objs = this.objs;
 	var objsElements = document.getElementsByClassName("models"); 
@@ -38,8 +48,6 @@ ObjectHandler.prototype.makeHandler = function(path , mat, objs){
 	        mesh = new THREE.Mesh( geometry, mat );
 	        geometry.computeFaceNormals();
 	        mesh.position.set(0, 0, 0);
-	       // var s = 10;
-	        //mesh.scale.set(s, s, s);
 	        objs.push(new myObj(path,mesh));
     };
 }
