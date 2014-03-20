@@ -618,7 +618,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	document.getElementById('view').addEventListener( 'touchend', touchend, false );
 	document.getElementById('view').addEventListener( 'touchmove', touchmove, false );
 
-	window.addEventListener( 'keydown', onKeyDown, false );
+	//window.addEventListener( 'keydown', onKeyDown, false );
 
 };
 
