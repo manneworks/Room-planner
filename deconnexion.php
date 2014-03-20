@@ -23,6 +23,8 @@
     </head>
 
 	 <body>
+	 
+
     	<article>
         	<a class="logo" title="Web Room Planner" alt="Accueil"> 
         	<img src="logo/titre3.png"> </a>
@@ -30,7 +32,11 @@
         </article> 
         
 		<p>Vous &ecirc;tes d&eacute;connect&eacute;, merci et &agrave; bient&ocirc;t</br>
-			<a href="WebRoomPlanner.php">Retourner &agrave; la page principale</a></p>
+			<meta http-equiv="refresh" content="1 ; URL=WebRoomPlanner.php">
+			<a href="WebRoomPlanner.php">Retourner &agrave; la page principale</a>
+		</p>
+
+
 		
 	</body>
 
