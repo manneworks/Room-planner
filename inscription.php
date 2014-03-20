@@ -8,29 +8,52 @@
 	$donneeInscription = 0;
 	$estDeja=0;
 	
-	
+
 	if (isset($_POST['pseudo']) && isset($_POST['passwd']) && isset($_POST['passwd2']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['fonction'])){
-			$exist = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo = '".$_POST['pseudo']."';");
+			$pseudo = htmlentities(mysql_real_escape_string($_POST['pseudo']));
+			$passwd = htmlentities(mysql_real_escape_string($_POST['passwd']));
+			$passwd2 = htmlentities(mysql_real_escape_string($_POST['passwd2']));
+			$nom = htmlentities(mysql_real_escape_string($_POST['nom']));
+			$prenom = htmlentities(mysql_real_escape_string($_POST['prenom']));
+
+
+
+
+			$exist = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo = '".$pseudo."';");
 			while ($ex = $exist->fetch()){
-				if ($ex['pseudo']==$_POST['pseudo']){
+				if (mysql_real_escape_string($ex['pseudo'])==$pseudo){
 					$estDeja=1;
 				}
 			}
 			
 			if ($estDeja > 0){
 				$erreur="Ce login existe deja";
-			}else if ($_POST['passwd'] != $_POST['passwd2']){
-				$erreur="Le mot de passe de confirmaton ne correspond pas au mot de passe";
-			} else if (($estDeja == 0) && ($_POST['passwd'] == $_POST['passwd2'])){
-				$donneeInscription = 1;
-				$_SESSION['connect'] = 1;
-				$_SESSION['pseudo'] = $_POST['pseudo'];
-				$_SESSION['nom'] = $_POST['nom'];
-				$_SESSION['prenom'] = $_POST['prenom'];
-				$_SESSION['fonction'] = $_POST['fonction'];
+			}else if ($passwd != $passwd2){
+				$erreur="Le mot de passe de confirmation ne correspond pas au mot de passe";
+			} else if (($estDeja == 0) && ($passwd == $passwd2)){
+
+				$bdd->query("INSERT INTO `projet`.`utilisateurs` (`id`, `pseudo`, `motDePasse`, `nom`, `prenom`, `fonction`) VALUES (NULL, '".$pseudo."', '".sha1($passwd)."', '".$nom."', '".$prenom."', '".$_POST['fonction']."');");
+
+				$verif = $bdd->query("SELECT * FROM utilisateurs WHERE pseudo = '".$pseudo."';");
+
+				while ($ver = $verif->fetch()){
+					if (mysql_real_escape_string($ver['pseudo'])==$pseudo){
+						$donneeInscription = 1;
+						$_SESSION['connect'] = 1;
+						$_SESSION['pseudo'] = $pseudo;
+						$_SESSION['nom'] = $nom;
+						$_SESSION['prenom'] = $prenom;
+						$_SESSION['fonction'] = $_POST['fonction'];
+					}
+				}	
+
+				if (mysql_real_escape_string($ver['pseudo'])!=$pseudo){
+					$erreur="Il y a eu un probl&egrave;me lors de l'inscription, veuillez r&eacute;essayer";
+				}				
 				
-				$bdd->query("INSERT INTO `projet`.`utilisateurs` (`id`, `pseudo`, `motDePasse`, `nom`, `prenom`, `fonction`) VALUES (NULL, '".$_POST['pseudo']."', '".sha1($_POST['passwd'])."', '".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['fonction']."');");
 			}	
+				
+				
 	} else {
 		$erreur = "Veuillez remplir tous les champs";
 	}
@@ -66,6 +89,7 @@
         <?php
 			if ($donneeInscription == 1){
 				echo ("Merci, vous &ecirc;tes bien enregistr&eacute; </br>");
+				echo ("<meta http-equiv=\"refresh\" content=\"1 ; URL=WebRoomPlanner.php\">");
 				echo ("<a href=\"WebRoomPlanner.php\">Retourner &agrave; la page principale</a>");
 			}else{
 				echo ("	   
@@ -81,7 +105,6 @@
 								<p><label for=\"prenom\">Pr&eacute;nom :</label><input type=\"text\" name=\"prenom\" id=\"prenom\" required /></p>
 								<p><label for=\"fonction\">Fonction : </label> 
 								   <select name=\"fonction\" id=\"fonction\">
-										<option value=\"\"></option>
 										<option value=\"arc\">Architecte</option>
 										<option value=\"deco\">D&eacute;corateur d'int&eacute;rieur</option>
 										<option value=\"autre\">Autre</option>
