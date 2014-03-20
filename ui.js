@@ -322,17 +322,19 @@ function loadObjMenu(sData){
             console.log(objSelectedId);
         },false);
 
+var img = document.createElement('img');
+img = sData[i+3];
         var txt= document.createElement('txt');
         txt=sData[i+2];
-        setTooltip(txt,p);
+        setTooltip(txt,p,img);
 
         i+=4;   
     }
 }
 
- function setTooltip(txt,p){
+ function setTooltip(txt,p,img){
     p.addEventListener('mouseover',function(){
-            tooltip.pop(this, txt, {position:1,offsetX:-20, effect:'slide'});
+            tooltip.pop(this, txt + "<br><img src='" +img +"'/>", {position:1,offsetX:-20, effect:'slide'});
     },false);
 
  } 
